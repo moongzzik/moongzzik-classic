@@ -150,6 +150,8 @@ a{color:var(--wineT)}
 .ichip[aria-pressed=true]{border-color:var(--fc);background:color-mix(in srgb,var(--fc) 14%,var(--paper));font-weight:600}
 .nowp{margin:0 0 10px;font-size:14px;font-weight:600;color:var(--brassT);background:color-mix(in srgb,var(--brass) 12%,transparent);border-radius:12px;padding:8px 12px}
 .ipanel{border:1px solid var(--line);border-radius:16px;padding:16px}
+.snd{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:2px 0 10px}.snd .btn{min-height:40px;padding:0 16px;gap:6px;font-size:14px}.snd small{font-size:12px;color:var(--mute)}
+.snd2{display:flex;gap:6px;margin-top:8px}.snd2 button{flex:1;min-height:38px;border-radius:12px;border:1px solid var(--line);background:var(--paper);font-size:13px}
 .ih{display:flex;justify-content:space-between;align-items:start;gap:8px}
 .ih h4{font-family:"Noto Serif KR",serif;font-size:21px;margin:2px 0 0}
 .fam{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--mute);font-weight:600}
@@ -196,6 +198,9 @@ a{color:var(--wineT)}
 .live .row{display:flex;justify-content:space-between;font-size:12px;color:#e9c98f;font-weight:600}
 .live b{display:block;font-size:15px;margin-top:2px}
 .live p{font-size:13px;color:#f1dfe3}
+.fixrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.fixrow:empty{display:none}
+.fixrow button{min-height:36px;border-radius:999px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:#fff;font-size:13px;padding:0 12px;text-align:left}
+.fixrow button.lite{border-color:transparent;background:none;color:#e9c98f;text-decoration:underline}
 .vbar{display:flex;justify-content:space-between;gap:10px;padding:10px 16px;font-size:14px;color:var(--mute)}
 .vbar span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .vbar a{flex:none}
@@ -273,6 +278,32 @@ a{color:var(--wineT)}
 .cats button span{color:var(--mute);font-size:12px;margin-left:2px}
 .cats button[aria-pressed=true]{background:var(--wine);border-color:var(--wine);color:#fff}
 .cats button[aria-pressed=true] span{color:#e9c98f}
+/* [추가] 둘러보기 필터와 7일 입문 코스 */
+.filt{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:-4px 0 8px}
+.filt label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--mute);font-weight:600}
+.filt select{min-height:42px;border-radius:12px;border:1px solid var(--line);background:var(--paper);color:var(--ink);font-size:14px;padding:0 8px;width:100%}
+.filt select.on{border-color:var(--wine);box-shadow:0 0 0 1px var(--wine)}
+@media(max-width:640px){.filt{grid-template-columns:1fr 1fr}}
+.fcount{font-size:13px;color:var(--mute);margin:0 0 10px;display:flex;gap:10px;align-items:center}
+.fcount button{border:0;background:none;color:var(--wineT);text-decoration:underline;font-size:13px;padding:6px 0}
+.course{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:16px;margin-top:18px}
+.course .ch{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.course h3{font-family:"Noto Serif KR",serif;font-size:19px}
+.course .cs{font-size:13px;color:var(--mute);margin-top:2px}
+.cbar{height:6px;border-radius:9px;background:var(--soft);margin:10px 0 12px;overflow:hidden}.cbar i{display:block;height:100%;background:var(--wine);border-radius:9px}
+.days{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;scroll-snap-type:x proximity}
+.day{flex:none;width:200px;scroll-snap-align:start;text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:3px;color:inherit}
+.day small{font-size:12px;font-weight:700;color:var(--brassT)}
+.day b{font-family:"Noto Serif KR",serif;font-size:15px;line-height:1.3}
+.day span{font-size:12.5px;color:var(--mute);line-height:1.45}
+.day.next{border-color:var(--wine);background:var(--soft)}
+.day.done small::after{content:" · 완료 ✓";color:var(--wineT)}
+.mission{border:1px solid color-mix(in srgb,var(--brass) 55%,transparent);background:color-mix(in srgb,var(--brass) 10%,var(--paper));border-radius:16px;padding:14px 16px;margin-bottom:14px}
+.mission small{font-size:12px;font-weight:700;color:var(--brassT)}
+.mission p{font-size:15px;margin:4px 0 10px}
+.mission .btn{min-height:40px;font-size:14px;padding:0 16px}
+.mission .btn[disabled]{opacity:.6}
+.mission .ghostb{background:var(--paper);color:var(--wineT);border:1px solid var(--wineT);white-space:normal;text-align:left}
 .shelfgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:10px}
 .bk{display:flex;flex-direction:column;gap:3px;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px 16px;min-height:44px;transition:border-color .15s,transform .15s}
 .bk:hover{border-color:var(--wineT);transform:translateY(-1px)}
@@ -346,7 +377,17 @@ footer{border-top:1px solid var(--line);padding:22px 0;text-align:center;font-si
     <p class="basis">KBS 클래식FM 청취자 설문 상위곡과, 방송·광고·드라마·피아노 학원으로 한국에서 특히 사랑받는 명곡을 골랐어요. 모두 미리 써 둔 해설이라 AI 없이 바로 열려요.</p></div>
     <input id="shelfQ" class="field" type="search" placeholder="서재에서 찾기: 작곡가, 곡명, 기분" aria-label="서재에서 찾기">
   </div>
+  <!-- [추가] 7일 입문 코스 -->
+  <div class="course" id="course"></div>
   <div class="cats" id="shelfCats" role="group" aria-label="갈래"></div>
+  <!-- [추가] 둘러보기: 시대·길이·기분·작곡가 -->
+  <div class="filt" id="shelfFilt">
+    <label><span>시대</span><select id="fEra"></select></label>
+    <label><span>길이</span><select id="fLen"></select></label>
+    <label><span>기분</span><select id="fMood"></select></label>
+    <label><span>작곡가</span><select id="fComp"></select></label>
+  </div>
+  <p class="fcount" id="fCount"></p>
   <div class="shelfgrid" id="shelfGrid"></div>
 </section>
 
@@ -373,7 +414,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;text-align:center;font-si
   <aside>
     <div id="videoCard" class="card hide">
       <div class="screen" id="screen"></div><button type="button" class="pinx" id="pinX" aria-label="고정 풀기">×</button>
-      <div id="live" class="live hide"><div class="row"><span>지금 듣는 구간</span><span id="liveTime">0:00</span></div><b id="liveTitle"></b><p id="liveDesc"></p></div>
+      <div id="live" class="live hide"><div class="row"><span>지금 듣는 구간</span><span id="liveTime">0:00</span></div><b id="liveTitle"></b><p id="liveDesc"></p><div class="fixrow" id="fixRow"></div></div>
       <div class="vbar"><span id="vTitle"></span><a id="vLink" href="#" target="_blank" rel="noopener noreferrer">유튜브에서 열기</a></div>
       <div class="valt" id="vAlt"></div>
     </div>
@@ -405,6 +446,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;text-align:center;font-si
   </aside>
 
   <main>
+    <div id="missionBox" class="mission hide" aria-live="polite"></div>
     <nav class="toc" aria-label="해설 목차">
       <a href="#s-story">이야기</a><a href="#s-stage">무대</a><a href="#s-guide">청취 가이드</a><a href="#s-words">용어</a><a href="#s-quiz">퀴즈</a><a href="#s-ask">질문하기</a>
     </nav>
@@ -739,8 +781,10 @@ const blockedIds = new Set(store.get(BAD_KEY, [])); // [수정] 재생 안 되�
 const embedBlocked = id => blockedIds.has(id);
 const markBad = id => { blockedIds.add(id); store.set(BAD_KEY, [...blockedIds].slice(-300)); };
 // [추가] 서재 곡의 영상 후보 중 재생 가능한 다음 영상 고르기
+// [수정] 시간이 맞춰진 연주 영상을 먼저 열도록 후보 순서를 정함 (cand = 이 순서에서의 자리)
+const libOrder = piece => { const vs = (piece && piece.videos) || []; return [...vs.filter(c => Array.isArray(c.pts)), ...vs.filter(c => !Array.isArray(c.pts))]; };
 function libVideo(piece, from) {
-  const vs = (piece && piece.videos) || [];
+  const vs = libOrder(piece);
   for (let i = from || 0; i < vs.length; i++) {
     const c = vs[i];
     if (!embedBlocked(c.videoId)) return { videoId: c.videoId, url: "https://www.youtube.com/watch?v=" + c.videoId, title: "연주: " + c.performer, author: "", libDefault: true, cand: i, pts: c.pts || null };
@@ -779,6 +823,7 @@ function killPlayer() { stopSync(); pinState.playing = false; updatePin(); if (y
 function renderVideo() {
   const v = S.video, card = $("#videoCard"), scr = $("#screen");
   $("#live").classList.add("hide");
+  $("#fixRow").innerHTML = ""; $("#fixRow").dataset.k = ""; // [추가]
   const searchUrl = S.piece ? "https://www.youtube.com/results?search_query=" + encodeURIComponent((S.piece.titleOrig || S.piece.titleKo) + " " + (S.piece.composerName || "")) : "https://www.youtube.com";
   if (!v) {
     killPlayer();
@@ -827,7 +872,26 @@ function applyScale(dur) {
 }
 // [수정] 서재 곡의 기본 영상이면 그 영상에 맞춘 시간(videoSeconds)을 씀
 const libSynced = () => !!(S.video && S.video.libDefault && Array.isArray(S.video.pts)); // [수정] 지금 연결된 영상에 맞춘 시간이 있을 때
-const ptSec = (pt, i) => libSynced() && typeof S.video.pts[i] === "number" ? S.video.pts[i] : Math.round(pt.seconds * S.scale);
+const ptBase = (pt, i) => libSynced() && typeof S.video.pts[i] === "number" ? S.video.pts[i] : Math.round(pt.seconds * S.scale);
+// [추가] 사용자가 직접 맞춘 시간 (영상별로 이 기기에 저장). 맞춘 구간 뒤쪽은 같은 만큼 함께 옮김
+const FIX_KEY = "moongzzik_classic_fix";
+const vidFix = () => { const v = S.video; return (v && v.videoId && (store.get(FIX_KEY, {})[v.videoId])) || null; };
+function ptSec(pt, i) {
+  const f = vidFix(), pts = (S.piece && S.piece.listeningPoints) || [];
+  if (!f) return ptBase(pt, i);
+  if (typeof f[i] === "number") return f[i];
+  for (let j = i - 1; j >= 0; j--) if (typeof f[j] === "number") return Math.max(f[j] + 1, ptBase(pt, i) + (f[j] - ptBase(pts[j], j)));
+  return ptBase(pt, i);
+}
+function setFix(i, sec) {
+  const v = S.video; if (!v || !v.videoId) return;
+  const all = store.get(FIX_KEY, {});
+  if (i == null) delete all[v.videoId];
+  else { all[v.videoId] = Object.assign({}, all[v.videoId], { [i]: Math.round(sec) }); }
+  const ks = Object.keys(all); if (ks.length > 200) delete all[ks[0]];
+  store.set(FIX_KEY, all);
+  renderGuide(); syncLive();
+}
 function syncLive() {
   if (!ytPlayer || !ytPlayer.getCurrentTime) return;
   const cur = ytPlayer.getCurrentTime() || 0;
@@ -840,6 +904,14 @@ function syncLive() {
   $("#liveTime").textContent = fmt(cur);
   $("#liveTitle").textContent = (p.movement ? p.movement + " · " : "") + (p.title || "");
   $("#liveDesc").textContent = p.description || "";
+  // [추가] 시간이 어긋나면 사용자가 직접 맞추기: 다음 구간이 들리기 시작할 때 누름
+  const nx = pts[idx + 1], fixed = !!vidFix();
+  const key = (nx ? idx + 1 : "-") + "|" + fixed;
+  const row = $("#fixRow");
+  if (row && row.dataset.k !== key) {
+    row.dataset.k = key;
+    row.innerHTML = (nx ? `<button type="button" data-fix="${idx + 1}">지금 '${esc(nx.title)}' 시작이에요</button>` : "") + (fixed ? '<button type="button" class="lite" data-fix="clear">맞춘 시간 지우기</button>' : "");
+  }
   markNow(idx);
 }
 function markNow(idx) {
@@ -868,13 +940,64 @@ function openLib(lib, raw, vid) {
   saveEntry({ id: old ? old.id : Date.now(), query: S.query, hint: S.hint, videoInfo: S.video, pieceData: piece, savedAt: new Date().toLocaleDateString("ko-KR"), diary: (old && old.diary) || { rating: 0, moods: [], memo: "" } });
   openResult(old && old.diary);
 }
+// [추가] 둘러보기 기준
+const eraOf = p => { const e = p.era || ""; return /^바로크/.test(e) ? "baroque" : /^고전/.test(e) ? "classic" : /인상|근대/.test(e) ? "modern" : "romantic"; };
+const ERAS = [["", "모든 시대"], ["baroque", "바로크"], ["classic", "고전주의"], ["romantic", "낭만주의"], ["modern", "근대·인상주의"]];
+const lenOf = p => { const d = p.typicalDurationSec || (p.id === "goldberg" ? 2700 : 0); return d <= 330 ? "short" : d <= 1200 ? "mid" : "long"; };
+const LENS = [["", "모든 길이"], ["short", "5분 안팎"], ["mid", "6~20분"], ["long", "20분 넘는 대작"]];
+const SHELF_MOODS = [["", "모든 기분"], ["calm", "잔잔하게"], ["bright", "산뜻하게"], ["grand", "웅장하게"], ["sad", "애틋하게"], ["hot", "뜨겁게"]];
+const MOOD_OF = {
+  calm: "k622 moonlight nocturne92 clairdelune gymnopedie traumerei goldberg canon air cellosuite1 meditation swan salut elise",
+  bright: "spring k467 mendelssohn_vc eineklein peergynt danube brindisi nutcracker moldau grieg_pc",
+  grand: "emperor tchai1 beet5 beet9 mahler5 dvorak9 nessundorma bolero grieg_pc moldau",
+  sad: "rach2 chopin1 dvorak bruch_vc tchai6 mozart40 unfinished brahms3 tristesse ballade1 pathetique swanlake standchen",
+  hot: "tchai_vc zigeuner paganini_rhapsody campanella habanera bolero tchai1 ballade1"
+};
+const shelfF = { era: "", len: "", mood: "", comp: "" };
+// [추가] 7일 입문 코스: 짧은 곡에서 긴 곡으로, 하루 한 곡과 듣기 미션
+const COURSE = [
+  ["canon", "반복의 힘", "낮은 현악기가 같은 여덟 음을 끝까지 되풀이해요. 그 위에서 바이올린이 점점 바빠지는 걸 느껴 보세요."],
+  ["spring", "음악으로 그린 그림", "바이올린들이 새소리를 흉내 내는 곳을 찾아보세요. 무대에서 바이올린을 눌러 소리도 들어 보세요."],
+  ["eineklein", "주제가 돌아올 때", "처음 나온 씩씩한 주제가 다시 돌아오는 순간을 찾아보세요. 고전주의 음악의 '균형'이 거기 있어요."],
+  ["moonlight", "같은 곡, 다른 얼굴", "1악장과 3악장을 이어 들어 보세요. 같은 곡인데 분위기가 얼마나 다른가요?"],
+  ["nutcracker", "악기의 색깔", "'사탕 요정의 춤'에서 첼레스타를 찾고, 무대 배치도에서 그 악기를 눌러 소리를 들어 보세요."],
+  ["beet5", "네 음으로 만든 교향곡", "'따따따 딴' 네 음이 곡 전체에서 몇 번이나 모습을 바꿔 나오는지 세어 보세요."],
+  ["rach2", "주인공과 오케스트라", "피아노가 주인공으로 노래할 때와 오케스트라를 받쳐 줄 때를 구분해 보세요."]
+];
+const COURSE_KEY = "moongzzik_classic_course";
+const courseDone = () => store.get(COURSE_KEY, []);
+function renderCourse() {
+  const done = courseDone(), next = COURSE.findIndex((_, i) => !done.includes(i + 1));
+  $("#course").innerHTML = `<div class="ch"><div><h3>처음이라면 · 7일 입문 코스</h3><p class="cs">하루 한 곡, 듣기 미션 하나. 짧은 곡에서 긴 곡으로 가요.</p></div><span class="pill">${done.length}/7 완료</span></div>
+    <div class="cbar"><i style="width:${(done.length / 7 * 100).toFixed(0)}%"></i></div>
+    <div class="days">${COURSE.map(([id, t, m], i) => { const p = LIB.find(x => x.id === id); if (!p) return ""; return `<button type="button" class="day${done.includes(i + 1) ? " done" : ""}${i === next ? " next" : ""}" data-lib="${id}"><small>Day ${i + 1} · ${esc(t)}</small><b>${esc(p.short)}</b><span>${esc(m)}</span></button>`; }).join("")}</div>`;
+  if (next > 0) { const el = $("#course .day.next"); if (el) el.parentNode.scrollLeft = Math.max(0, el.offsetLeft - el.parentNode.offsetLeft - 8); }
+}
+function renderMission() {
+  const box = $("#missionBox"), i = S.piece && S.piece.fromLib ? COURSE.findIndex(c => c[0] === S.piece.id) : -1;
+  if (i < 0) { box.classList.add("hide"); box.innerHTML = ""; return; }
+  const ok = courseDone().includes(i + 1), nx = COURSE[i + 1] && LIB.find(x => x.id === COURSE[i + 1][0]);
+  box.classList.remove("hide");
+  box.innerHTML = `<small>7일 입문 코스 · Day ${i + 1} 듣기 미션</small><p>${esc(COURSE[i][2])}</p>` +
+    (ok ? `<button type="button" class="btn" disabled>미션 완료 ✓</button>${nx ? ` <button type="button" class="btn ghostb" data-lib="${COURSE[i + 1][0]}">다음 곡: ${esc(nx.short)}</button>` : ""}` : `<button type="button" class="btn" data-course="${i + 1}">미션 완료!</button>`);
+}
 const CATS = [["all", "전체"], ["concerto", "협주곡"], ["symphony", "교향곡"], ["piano", "피아노"], ["orchestral", "관현악·소품"], ["vocal", "성악·오페라"]];
 let shelfCat = "all";
 function renderShelf() {
   const q = $("#shelfQ").value.trim().toLowerCase();
   $("#shelfCats").innerHTML = CATS.map(([k, n]) => `<button type="button" data-cat="${k}" aria-pressed="${shelfCat === k}">${n} <span>${k === "all" ? LIB.length : LIB.filter(p => p.cat === k).length}</span></button>`).join("");
+  // [추가] 시대·길이·기분·작곡가 목록 (처음 한 번만 채움)
+  const opt = (sel, arr) => { if (!sel.options.length) sel.innerHTML = arr.map(([v, n]) => `<option value="${v}">${esc(n)}</option>`).join(""); };
+  opt($("#fEra"), ERAS); opt($("#fLen"), LENS); opt($("#fMood"), SHELF_MOODS);
+  const comps = [...new Set(LIB.map(p => p.composerName))].sort((a, b) => a.localeCompare(b, "ko"));
+  opt($("#fComp"), [["", "모든 작곡가"], ...comps.map(c => [c, `${c} (${LIB.filter(p => p.composerName === c).length})`])]);
+  [["fEra", "era"], ["fLen", "len"], ["fMood", "mood"], ["fComp", "comp"]].forEach(([id, k]) => { $("#" + id).value = shelfF[k]; $("#" + id).classList.toggle("on", !!shelfF[k]); });
   const list = LIB.filter(p => (shelfCat === "all" || p.cat === shelfCat) &&
+    (!shelfF.era || eraOf(p) === shelfF.era) && (!shelfF.len || lenOf(p) === shelfF.len) &&
+    (!shelfF.mood || MOOD_OF[shelfF.mood].split(" ").includes(p.id)) && (!shelfF.comp || p.composerName === shelfF.comp) &&
     (!q || [p.short, p.titleKo, p.titleOrig, p.composerName, ...(p.moodTags || [])].join(" ").toLowerCase().includes(q)));
+  const any = shelfF.era || shelfF.len || shelfF.mood || shelfF.comp || q || shelfCat !== "all";
+  $("#fCount").innerHTML = `<span>${list.length}곡</span>` + (any ? '<button type="button" data-act="fclear">조건 지우기</button>' : "");
   $("#shelfGrid").innerHTML = list.length ? list.map(p => `<button type="button" class="bk" data-lib="${esc(p.id)}"><small>${esc(p.era)} · ${esc(p.composerName)}</small><b>${esc(p.short)}</b><span>${esc((p.moodTags || []).map(t => "#" + String(t).replace(/^#/, "")).join(" "))}</span></button>`).join("")
     : '<p class="empty">찾는 곡이 서재에 없어요. 위 검색창에 곡 제목을 넣으면 AI가 해설해 드려요.</p>';
 }
@@ -924,6 +1047,7 @@ function openResult(diary) {
   show("result");
   renderAll();
   loadDiary(diary || { rating: 0, moods: [], memo: "" });
+  renderMission(); // [추가] 7일 코스 곡이면 듣기 미션
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -972,7 +1096,8 @@ function renderGuide() {
   const d = S.piece; if (!d) return;
   const v = S.video, pts = d.listeningPoints;
   $("#guideSub").textContent = v ? (ytMode === "embed" ? "시간을 누르면 영상이 그 구간으로 이동해요" : "시간을 누르면 유튜브가 그 지점부터 열려요") : "유튜브 링크로 찾으면 시간을 눌러 바로 이동할 수 있어요";
-  $("#guideNote").textContent = libSynced() ? "시간은 위 연주 영상의 악장 시작 시간에 맞춘 위치예요. 몇 초쯤 차이 날 수 있어요." // [추가]
+  $("#guideNote").textContent = vidFix() ? "이 영상에 직접 맞춘 시간이에요. 이 기기에 기억해 둘게요." : libSynced() ? "시간은 위 연주 영상의 악장 시작 시간에 맞춘 위치예요. 몇 초쯤 차이 날 수 있어요." // [추가]
+    : S.video && ytMode === "embed" && !embedBlocked(S.video.videoId) && !S.scaleNote ? "시간은 보통 연주 기준이라 이 영상과 조금 다를 수 있어요. 재생 중 위쪽의 '지금 … 시작이에요'를 누르면 이 영상에 맞출 수 있어요."
     : S.scaleNote || d.guideNote || (S.video && S.video.libDefault ? "시간은 보통 연주를 기준으로 한 대략적인 위치예요. 위 영상과는 조금 다를 수 있어요." : null) || (d.isCompilation ? "여러 곡이 담긴 영상이라 시간은 대표 곡 기준이에요. 영상의 실제 위치와 다를 수 있어요." : "시간은 이 곡의 보통 연주 길이를 기준으로 한 대략적인 위치예요. 연주마다 몇십 초씩 다를 수 있어요.");
   $("#rGuide").innerHTML = pts.length ? pts.map((p, i) => {
     const sec = ptSec(p, i);
@@ -1203,15 +1328,173 @@ function pickInst(k) {
       : `<button class="mo" type="button" data-seek="${i}">${inner}</button>`;
   }).join("") : `<p class="small" style="margin:0">청취 가이드에는 이 악기가 따로 돋보이는 구간이 없어요. 합주 속에서 찾아 들어 보세요.</p>`;
   // 소리 높이 막대 (피아노 건반 21~108 기준)
-  const range = I.lo != null ? `<div class="range" aria-label="소리 높이 범위"><span style="left:${((I.lo - 21) / 87 * 100).toFixed(1)}%;width:${((I.hi - I.lo) / 87 * 100).toFixed(1)}%"></span><em style="left:${((60 - 21) / 87 * 100).toFixed(1)}%"></em></div><div class="rlab"><span>낮은 소리</span><span>가운데 '도'</span><span>높은 소리</span></div>` : `<p class="small" style="margin:4px 0 0">정해진 음 높이 없이 리듬과 색을 더하는 악기예요.</p>`;
+  const range = I.lo != null ? `<div class="range" aria-label="소리 높이 범위"><span style="left:${((I.lo - 21) / 87 * 100).toFixed(1)}%;width:${((I.hi - I.lo) / 87 * 100).toFixed(1)}%"></span><em style="left:${((60 - 21) / 87 * 100).toFixed(1)}%"></em></div><div class="rlab"><span>낮은 소리</span><span>가운데 '도'</span><span>높은 소리</span></div><div class="snd2"><button type="button" data-snd="lo">가장 낮은 소리</button><button type="button" data-snd="hi">가장 높은 소리</button></div>` : `<p class="small" style="margin:4px 0 0">정해진 음 높이 없이 리듬과 색을 더하는 악기예요.</p>`;
   $("#instPanel").innerHTML = `
     <div class="ih"><div><small class="fam f-${I.fam}"><i></i>${esc(FAM[I.fam].n)}${k === "solo" ? " · 무대의 주인공" : ""}</small><h4>${esc(I.n)}</h4></div>${count ? `<span class="pill">${esc(count)}</span>` : ""}</div>
     ${role ? `<p class="irole">${esc(role)}</p>` : ""}${timbre ? `<p class="small" style="margin:4px 0 0">이 곡에서의 소리: ${esc(timbre)}</p>` : ""}
     <h5>이 악기가 돋보이는 순간</h5><div class="moments">${momentHtml}</div>
     <h5>악기 도감</h5>
+    <div class="snd"><button type="button" class="btn" data-snd="tune"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 2l9 5-9 5z" fill="currentColor"/></svg>${I.lo == null ? "리듬 들어 보기" : "소리 들어 보기"}</button><small>브라우저가 흉내 낸 소리라 실제 악기와는 조금 달라요</small></div>
     <dl class="dex"><dt>생김새</dt><dd>${esc(I.look)}</dd><dt>소리</dt><dd>${esc(I.tone)}</dd><dt>알고 있나요?</dt><dd>${esc(I.fact)}</dd></dl>
     <h5>소리 높이</h5>${range}`;
 }
+// ============ [추가] 악기 소리 듣기: 녹음 파일 없이 브라우저가 소리를 합성 (Web Audio) ============
+let AC = null, acOut = null, acVoices = [];
+function audioCtx() {
+  if (!AC) {
+    const C = window.AudioContext || window.webkitAudioContext; if (!C) return null;
+    AC = new C();
+    const comp = AC.createDynamicsCompressor(); comp.threshold.value = -14; comp.ratio.value = 4;
+    acOut = AC.createGain(); acOut.gain.value = 0.8; acOut.connect(comp); comp.connect(AC.destination);
+  }
+  if (AC.state === "suspended" && AC.resume) AC.resume().catch(() => {});
+  return AC;
+}
+const mf = m => 440 * Math.pow(2, (m - 69) / 12);
+function stopInstSound() { acVoices.forEach(n => { try { n.stop(); } catch {} }); acVoices = []; }
+function noiseBuf(sec) {
+  const b = AC.createBuffer(1, Math.max(1, Math.floor(AC.sampleRate * sec)), AC.sampleRate), d = b.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  return b;
+}
+// 볼륨 모양(엔벨로프): 천천히 켜졌다가 dur 뒤에 rel 동안 꺼짐
+function env(g, t, a, peak, dur, rel, sustain) {
+  const lv = peak * (sustain == null ? 1 : sustain), hold = Math.max(a + 0.01, dur);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.linearRampToValueAtTime(peak, t + a);
+  if (sustain != null && hold > a + 0.2) g.gain.linearRampToValueAtTime(lv, t + a + 0.2);
+  g.gain.setValueAtTime(sustain != null && hold > a + 0.2 ? lv : peak, t + hold);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + hold + rel);
+}
+function osc(type, f, t, end, dest, detune) {
+  const o = AC.createOscillator(); o.type = type; o.frequency.setValueAtTime(f, t); if (detune) o.detune.value = detune;
+  o.connect(dest); o.start(t); o.stop(end); acVoices.push(o); return o;
+}
+function vib(o, t, end, rate, cents) {
+  const l = AC.createOscillator(), g = AC.createGain(); l.frequency.value = rate; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(cents, t + 0.25);
+  l.connect(g); g.connect(o.detune); l.start(t); l.stop(end); acVoices.push(l);
+}
+function filt(type, f, q, dest, gain) { const b = AC.createBiquadFilter(); b.type = type; b.frequency.value = f; if (q != null) b.Q.value = q; if (gain != null) b.gain.value = gain; b.connect(dest); return b; }
+function noise(t, dur, dest) { const s = AC.createBufferSource(); s.buffer = noiseBuf(dur + 0.05); s.connect(dest); s.start(t); s.stop(t + dur + 0.05); acVoices.push(s); return s; }
+// 뜯는 소리(하프·하프시코드): 카플러스-스트롱 방식으로 줄 떨림을 계산
+function pluck(f, t, dur, dest, bright, vol) {
+  const sr = AC.sampleRate, n = Math.floor(sr * dur), b = AC.createBuffer(1, n, sr), d = b.getChannelData(0);
+  const P = Math.max(2, Math.round(sr / f)), ring = new Float32Array(P);
+  for (let i = 0; i < P; i++) ring[i] = Math.random() * 2 - 1;
+  let k = 0, prev = 0;
+  for (let i = 0; i < n; i++) { const x = ring[k]; const y = bright * x + (1 - bright) * prev; ring[k] = y * 0.996; prev = x; d[i] = x * vol; k = (k + 1) % P; }
+  const s = AC.createBufferSource(); s.buffer = b; s.connect(dest); s.start(t); acVoices.push(s);
+}
+// 악기별 한 음 연주
+function playNote(key, m, t, dur) {
+  const f = mf(m), end = t + dur + 1.6, I = INST[key] || {};
+  const VOL = { voice: 5, chorus: 4.5, pf: 2.2, tp: 1.5, cor: 1.5, tbn: 1.5, glock: 1.6, cel: 1.6, cl: 1.3, bcl: 1.3, ob: 1.3 };
+  const g = AC.createGain(), vo = AC.createGain(); vo.gain.value = VOL[key] || 1; vo.connect(acOut); g.connect(vo);
+  const fam = I.fam;
+  const bowed = k => { // 활로 켜는 현악기
+    env(g, t, 0.09, 0.22, dur, 0.18, 0.85);
+    const lp = filt("lowpass", Math.min(9000, f * 7), 0.7, g); const body = filt("peaking", k === "cb" || k === "vc" ? 250 : 550, 1, lp, 4);
+    [-6, 6].forEach(dt => { const o = osc("sawtooth", f, t, end, body, dt); vib(o, t, end, 5.6, 12); });
+  };
+  if (fam === "str") return bowed(key);
+  switch (key) {
+    case "fl": case "picc": {
+      env(g, t, 0.07, 0.3, dur, 0.15, 0.9);
+      const o = osc("sine", f, t, end, g); vib(o, t, end, 5, 10); osc("triangle", f * 2, t, end, filt("lowpass", 3000, 0.5, (() => { const h = AC.createGain(); h.gain.value = 0.15; h.connect(g); return h; })()));
+      const ng = AC.createGain(); ng.gain.value = 0.04; ng.connect(g); noise(t, dur, filt("bandpass", f * 2, 2, ng)); return;
+    }
+    case "ob": case "eh": case "oboedamore": {
+      env(g, t, 0.04, 0.16, dur, 0.1, 0.9);
+      const pk = filt("peaking", key === "ob" ? 1400 : 1000, 3, filt("lowpass", 4500, 0.7, g), 14); const hp = filt("highpass", f * 1.5, 0.5, pk);
+      const o = osc("sawtooth", f, t, end, hp); vib(o, t, end, 5.5, 8); return;
+    }
+    case "cl": case "bcl": {
+      env(g, t, 0.04, 0.17, dur, 0.12, 0.9);
+      const o = osc("square", f, t, end, filt("lowpass", Math.min(3500, f * 5), 0.6, g)); vib(o, t, end, 4.5, 3); return;
+    }
+    case "bsn": case "cbsn": {
+      env(g, t, 0.05, 0.25, dur, 0.12, 0.9);
+      osc("sawtooth", f, t, end, filt("peaking", 480, 2, filt("lowpass", 1100, 0.7, g), 9)); return;
+    }
+    case "sax": {
+      env(g, t, 0.05, 0.17, dur, 0.12, 0.9);
+      const o = osc("sawtooth", f, t, end, filt("peaking", 1100, 1.5, filt("lowpass", 2800, 0.8, g), 8)); vib(o, t, end, 5, 14); return;
+    }
+    case "hn": {
+      env(g, t, 0.12, 0.26, dur, 0.2, 0.9);
+      osc("sawtooth", f, t, end, filt("lowpass", Math.min(1800, f * 3), 0.7, g)); osc("sine", f, t, end, g); return;
+    }
+    case "tp": case "cor": case "tbn": case "tuba": {
+      env(g, t, 0.05, key === "tuba" ? 0.32 : 0.2, dur, 0.12, 0.85);
+      const lp = filt("lowpass", f * 2, 1.2, g), top = key === "tuba" ? 900 : key === "tbn" ? 2600 : 5000;
+      lp.frequency.setValueAtTime(f * 1.5, t); lp.frequency.exponentialRampToValueAtTime(Math.max(f * 2, top), t + 0.08);
+      osc("sawtooth", f, t, end, lp); return;
+    }
+    case "timp": {
+      env(g, t, 0.005, 0.5, 0.05, 1.3);
+      const o = osc("sine", f * 1.08, t, end, g); o.frequency.exponentialRampToValueAtTime(f, t + 0.12);
+      osc("sine", f * 1.5, t, end, (() => { const h = AC.createGain(); h.gain.value = 0.3; h.connect(g); return h; })());
+      const ng = AC.createGain(); env(ng, t, 0.002, 0.25, 0.02, 0.15); ng.connect(acOut); noise(t, 0.2, filt("lowpass", 900, 1, ng)); return;
+    }
+    case "glock": case "cel": {
+      env(g, t, 0.003, key === "cel" ? 0.22 : 0.18, 0.01, key === "cel" ? 1.1 : 1.6);
+      const fx = key === "glock" ? f : f; osc("sine", fx, t, end, g);
+      const h = AC.createGain(); h.gain.value = key === "glock" ? 0.25 : 0.12; h.connect(g); osc("sine", fx * (key === "glock" ? 2.76 : 4), t, end, h); return;
+    }
+    case "harp": pluck(f, t, 2.2, g, m > 80 ? 0.85 : 0.5, 0.5); g.gain.value = 0.9; return;
+    case "hpsd": pluck(f, t, 1.4, filt("highpass", 200, 0.5, g), 0.92, 0.32); g.gain.value = 0.9; return;
+    case "pf": {
+      env(g, t, 0.004, 0.32, 0.02, Math.max(1.2, 3 - (m - 40) / 30));
+      [1, 2, 3, 4, 5, 6].forEach(n => { const h = AC.createGain(); h.gain.setValueAtTime(0.5 / (n * n * 0.6 + 0.4), t); h.gain.exponentialRampToValueAtTime(0.0001, t + 2.4 / n); h.connect(g); osc("sine", f * n * (1 + 0.0004 * n * n), t, end, h); });
+      return;
+    }
+    case "org": {
+      env(g, t, 0.03, 0.14, dur, 0.08);
+      [[1, 1], [2, 0.6], [3, 0.35], [4, 0.3], [8, 0.12]].forEach(([n, a]) => { const h = AC.createGain(); h.gain.value = a; h.connect(g); osc("sine", f * n, t, end, h); }); return;
+    }
+    case "voice": case "chorus": { // '아' 모음 소리를 흉내 (포먼트)
+      env(g, t, key === "chorus" ? 0.18 : 0.1, key === "chorus" ? 0.11 : 0.2, dur, 0.2, 0.9);
+      const mix = AC.createGain(); mix.gain.value = 1;
+      [[800, 0.9], [1150, 0.5], [2900, 0.25]].forEach(([fr, a]) => { const h = AC.createGain(); h.gain.value = a; h.connect(g); mix.connect(filt("bandpass", fr, 8, h)); });
+      const ds = key === "chorus" ? [-14, -5, 5, 14] : [0];
+      ds.forEach(dt => { const o = osc("sawtooth", f, t, end, mix, dt); vib(o, t, end, key === "chorus" ? 4.5 + Math.random() : 5.5, key === "chorus" ? 10 : 22); });
+      return;
+    }
+  }
+}
+// 음높이 없는 타악기는 짧은 리듬으로
+function playHit(key, t) {
+  const g = AC.createGain(), vo = AC.createGain(); vo.gain.value = key === "cast" || key === "tamb" ? 2.2 : 1; vo.connect(acOut); g.connect(vo);
+  switch (key) {
+    case "bd": { env(g, t, 0.003, 0.9, 0.02, 0.6); const o = osc("sine", 90, t, t + 1, g); o.frequency.exponentialRampToValueAtTime(42, t + 0.25); return; }
+    case "sd": { env(g, t, 0.002, 0.45, 0.01, 0.18); noise(t, 0.25, filt("highpass", 1500, 0.7, g)); const h = AC.createGain(); env(h, t, 0.002, 0.3, 0.01, 0.08); h.connect(acOut); osc("triangle", 190, t, t + 0.2, h); return; }
+    case "cym": { env(g, t, 0.003, 0.3, 0.02, 1.6); noise(t, 1.8, filt("highpass", 5000, 0.5, g)); return; }
+    case "tri": { env(g, t, 0.002, 0.12, 0.01, 1.6); [4100, 5600, 7900].forEach(fr => osc("sine", fr, t, t + 1.8, g)); return; }
+    case "tamb": { env(g, t, 0.002, 0.3, 0.02, 0.22); noise(t, 0.3, filt("bandpass", 7000, 1.5, g)); return; }
+    case "cast": { env(g, t, 0.001, 0.5, 0.005, 0.04); noise(t, 0.06, filt("bandpass", 2600, 4, g)); return; }
+    case "tam": { env(g, t, 0.25, 0.32, 0.3, 3); noise(t, 3.5, filt("lowpass", 700, 1, g)); [110, 157, 233].forEach(fr => osc("sine", fr, t, t + 3.6, g)); return; }
+  }
+}
+// mode: "tune" 짧은 선율, "lo" 가장 낮은 소리, "hi" 가장 높은 소리
+function playInst(key, mode) {
+  const I = INST[key]; if (!I || !audioCtx()) return false;
+  stopInstSound();
+  const t0 = AC.currentTime + 0.05;
+  if (I.lo == null) { // 리듬
+    const beats = key === "tam" || key === "cym" ? [0, 1.2] : key === "cast" ? [0, 0.15, 0.3, 0.6, 0.75, 0.9, 1.2] : key === "tri" ? [0, 0.6, 1.2] : [0, 0.4, 0.8, 1.0, 1.2];
+    beats.forEach(b => playHit(key, t0 + b)); return true;
+  }
+  const lo = I.lo, hi = I.hi;
+  if (mode === "lo") { playNote(key, lo, t0, 1.1); return true; }
+  if (mode === "hi") { playNote(key, hi, t0, 1.1); return true; }
+  // 악기의 편한 음역(아래에서 40% 지점)에서 도-미-솔-도-솔-도 비슷한 짧은 선율
+  let base = Math.round(lo + (hi - lo) * 0.35); base -= ((base % 12) + 12) % 12; if (base < lo) base += 12; // '도'에 맞춤
+  const tune = key === "timp" ? [[0, 0.45], [7, 0.45], [0, 0.45], [7, 0.3], [0, 0.9]] : [[0, 0.38], [4, 0.38], [7, 0.38], [12, 0.6], [7, 0.38], [12, 0.9]];
+  let t = t0;
+  tune.forEach(([iv, d]) => { const m = Math.min(hi, base + iv); if (key === "chorus") [0, -8].forEach(x => playNote(key, m + x, t, d * 0.95)); else playNote(key, m, t, d * 0.92); t += d; });
+  return true;
+}
+
 // 재생 중(또는 가이드를 눌렀을 때) 그 구간에서 활약하는 악기에 불 켜기
 function lightStage(i) {
   const f = (S.orch && S.orch.feats && S.orch.feats[i]) || [];
@@ -1438,6 +1721,18 @@ function goHome() {
 // ============ 이벤트 ============
 document.addEventListener("click", async e => {
   if (e.target.closest("#pinX")) { pinState.off = true; updatePin(); return; } // [추가] 영상 고정 풀기
+  const cz = e.target.closest("[data-course]"); // [추가] 7일 코스 미션 완료
+  if (cz) { const n = +cz.dataset.course, d = courseDone(); if (!d.includes(n)) store.set(COURSE_KEY, [...d, n]); renderMission(); renderCourse(); toast(courseDone().length >= 7 ? "7일 입문 코스를 모두 마쳤어요. 축하해요!" : `Day ${n} 미션 완료! 다음 곡도 기다리고 있어요.`); return; }
+  const sn = e.target.closest("[data-snd]"); // [추가] 악기 소리 듣기
+  if (sn && S.inst) { if (!playInst(S.inst === "solo" ? S.orch.solo : S.inst, sn.dataset.snd)) toast("이 브라우저에서는 소리를 낼 수 없어요.", true); return; }
+  const fx = e.target.closest("[data-fix]"); // [추가] 영상 시간 직접 맞추기
+  if (fx) {
+    if (fx.dataset.fix === "clear") { setFix(null); toast("맞춘 시간을 지우고 원래 시간으로 돌렸어요."); return; }
+    if (!ytPlayer || !ytPlayer.getCurrentTime) return;
+    const i = +fx.dataset.fix, t = ytPlayer.getCurrentTime() || 0, pts = S.piece.listeningPoints;
+    setFix(i, t); toast(`'${pts[i].title}'을 ${fmt(t)}로 맞췄어요. 뒤 구간도 함께 옮겼어요.`);
+    return;
+  }
   const t = e.target.closest("[data-lib],[data-cat],[data-act],[data-q],[data-level],[data-inst],[data-gi],[data-seek],[data-quiz],[data-ask],[data-star],[data-mood],[data-filter],[data-open]");
   if (!t) return;
   const ds = t.dataset;
@@ -1461,6 +1756,7 @@ document.addEventListener("click", async e => {
   else if (ds.filter) { S.filter = ds.filter; renderHist(); }
   else if (ds.open) openEntry(ds.open);
   else if (ds.act === "home") goHome();
+  else if (ds.act === "fclear") { Object.keys(shelfF).forEach(k => shelfF[k] = ""); shelfCat = "all"; $("#shelfQ").value = ""; renderShelf(); } // [추가]
   else if (ds.act === "drawer") drawer();
   else if (ds.act === "settings") openSettings();
   else if (ds.act === "closeset") $("#settings").classList.add("hide");
@@ -1509,6 +1805,8 @@ $("#chatForm").addEventListener("submit", e => { e.preventDefault(); const v = $
   document.querySelectorAll("[data-level]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.level === S.level)));
   renderShelf(); // [추가]
   $("#shelfQ").addEventListener("input", renderShelf);
+  [["fEra", "era"], ["fLen", "len"], ["fMood", "mood"], ["fComp", "comp"]].forEach(([id, k]) => $("#" + id).addEventListener("change", e => { shelfF[k] = e.target.value; renderShelf(); })); // [추가]
+  renderCourse(); // [추가]
   renderHist();
   engineLabel();
   // [추가] 설치형: 서비스 워커 등록 (claude.ai 안에서는 막혀 있어 조용히 넘어감)
