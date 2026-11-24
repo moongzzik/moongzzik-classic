@@ -431,6 +431,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;text-align:center;font-si
         <div class="tags" id="cTags"></div>
         <button id="voiceBtn" class="btn line voice" data-act="voice" data-on="false">도슨트 음성으로 듣기</button>
         <audio id="voiceAudio" class="hide" style="width:100%;margin-top:10px" controls></audio>
+        <a id="rawLink" class="small hide" download="docent-original.wav" style="display:inline-block;margin-top:6px;color:var(--mute)">끝에 잡음이 들리면: 원본 음성 파일 받기</a>
       </div>
     </div>
 
@@ -537,6 +538,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;text-align:center;font-si
     <label for="keyIn" style="font-weight:600;font-size:15px">Gemini API 키 (설치형·GitHub에서 쓸 때)</label>
     <input id="keyIn" class="field" type="password" autocomplete="off" placeholder="AIza…" style="margin-top:6px">
     <p class="small">키는 이 기기의 브라우저에만 저장되고, Google로만 보내져요. claude.ai 안에서는 키 없이 Claude가 해설해요.</p>
+    <p class="small" id="appVer" style="margin-top:4px"></p>
     <div class="acts"><button class="btn line" data-act="testkey">키 시험하기</button><button class="btn line" data-act="delkey">키 지우기</button><button class="btn line" data-act="closeset">닫기</button><button class="btn" data-act="savekey">저장</button></div>
   </div>
 </div>
@@ -1048,6 +1050,7 @@ function openResult(diary) {
   renderAll();
   loadDiary(diary || { rating: 0, moods: [], memo: "" });
   renderMission(); // [추가] 7일 코스 곡이면 듣기 미션
+  $("#rawLink").classList.add("hide"); // [추가] 다른 곡의 원본 음성 링크는 숨김
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -1522,7 +1525,7 @@ function answerQuiz(i) {
 }
 
 // ============ 음성 도슨트: Claude 음성 → Gemini 음성 → 브라우저 음성 ============
-let audioUrl = null;
+let audioUrl = null, rawUrl = null;
 function voiceBtn() {
   const b = $("#voiceBtn"), on = ttsSpeaking || (window.speechSynthesis && speechSynthesis.speaking) || !$("#voiceAudio").paused;
   b.dataset.on = String(!!on);
@@ -1572,8 +1575,16 @@ async function playVoice() {
       const rate = Number(((part.inlineData.mimeType || "").match(/rate=(\d+)/) || [])[1]) || 24000;
       const bin = atob(data), bytes = new Uint8Array(bin.length);
       for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-      audioUrl = URL.createObjectURL(wav(cleanPcm(bytes, rate), rate)); // [수정] 끝 잡음 제거
+      const cleaned = cleanPcm(bytes, rate);
+      audioUrl = URL.createObjectURL(wav(cleaned, rate)); // [수정] 끝 잡음 제거
+      // [추가] 문제 확인용 원본 음성 (잡음 지우기 전)
+      if (rawUrl) URL.revokeObjectURL(rawUrl);
+      rawUrl = URL.createObjectURL(wav(bytes, rate));
+      const rl = $("#rawLink"); rl.href = rawUrl; rl.classList.remove("hide");
       const a = $("#voiceAudio"); a.src = audioUrl; a.classList.remove("hide");
+      // [추가] 마지막 말 직후(끝 쉼 안)에서 앱이 재생을 직접 멈춤: 파일 끝에서 기기가 내는 '치직'을 피함
+      const stopAt = cleaned.length / 2 / rate - PCM_TAIL + 0.25;
+      a.ontimeupdate = () => { if (!a.paused && a.currentTime >= stopAt) { a.pause(); a.currentTime = 0; } };
       a.onplay = a.onpause = a.onended = voiceBtn;
       await a.play();
       b.disabled = false; voiceBtn(); return;
@@ -1588,6 +1599,7 @@ async function playVoice() {
   toast("이 기기에서는 음성을 들려 드릴 수 없어요.", true);
 }
 // [수정] Gemini 음성 끝 '치직' 잡음 제거 (말소리의 크기·거칠기를 먼저 재고, 끝에서부터 그와 다른 구간을 잘라 냄)
+const PCM_TAIL = 1.0, APP_VER = "v16"; // [추가] 끝 쉼 길이 · 설정에 보이는 앱 버전
 function cleanPcm(bytes, rate) {
   const n = Math.floor(bytes.length / 2), dv = new DataView(bytes.buffer, bytes.byteOffset, n * 2);
   const x = new Int16Array(n);
@@ -1634,7 +1646,7 @@ function cleanPcm(bytes, rate) {
   let lastV = -1;
   for (let w = W - 1; w >= minW; w--) if (voiced(w) && voiced(w - 1)) { lastV = w; break; } // 두 창 연속이어야 진짜 목소리
   const end = lastV < 0 ? n : Math.min(n, (lastV + 1) * win + Math.round(rate * 0.06));
-  const out = new Int16Array(end + Math.round(rate * 0.4)); out.set(x.subarray(0, end)); // [수정] 끝에 0.4초 쉼을 붙여 마지막 말이 잘려 들리지 않게
+  const out = new Int16Array(end + Math.round(rate * PCM_TAIL)); out.set(x.subarray(0, end)); // [수정] 끝에 1초 쉼을 붙이고, 재생은 그 쉼 안에서 앱이 직접 멈춤
   const fin = Math.min(out.length, Math.round(rate * 0.01)), fout = Math.min(end, Math.round(rate * 0.1));
   for (let i = 0; i < fin; i++) out[i] = Math.round(out[i] * i / fin);
   for (let i = 0; i < fout; i++) { const k = end - 1 - i; if (k >= 0) out[k] = Math.round(out[k] * (i / fout) ** 2); }
@@ -1834,6 +1846,7 @@ $("#chatForm").addEventListener("submit", e => { e.preventDefault(); const v = $
   document.querySelectorAll("[data-level]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.level === S.level)));
   renderShelf(); // [추가]
   $("#shelfQ").addEventListener("input", renderShelf);
+  $("#appVer").textContent = "앱 버전 " + APP_VER; // [추가] 새 버전이 들어왔는지 확인용
   [["fEra", "era"], ["fLen", "len"], ["fMood", "mood"], ["fComp", "comp"]].forEach(([id, k]) => $("#" + id).addEventListener("change", e => { shelfF[k] = e.target.value; renderShelf(); })); // [추가]
   renderCourse(); // [추가]
   renderHist();
