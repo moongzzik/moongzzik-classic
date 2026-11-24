@@ -1,6 +1,6 @@
 // 클래식에 관한 소고 — 서비스 워커
 // 고칠 때마다 VERSION 숫자를 1씩 올린다 (설치한 폰이 새 버전을 받도록)
-const VERSION = "moongzzik-classic-v7";
+const VERSION = "moongzzik-classic-v9";
 const SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
@@ -18,7 +18,7 @@ self.addEventListener("fetch", e => {
   if (req.method !== "GET" || url.origin !== self.location.origin) return;
   // 화면(html)은 인터넷 먼저 → 실패하면 저장본 (새 버전을 빨리 받도록)
   if (req.mode === "navigate" || url.pathname.endsWith(".html")) {
-    e.respondWith(fetch(req).then(res => { const copy = res.clone(); caches.open(VERSION).then(c => c.put("./index.html", copy)); return res; })
+    e.respondWith(fetch(req, { cache: "no-cache" }).then(res => { const copy = res.clone(); caches.open(VERSION).then(c => c.put("./index.html", copy)); return res; })
       .catch(() => caches.match("./index.html")));
     return;
   }
