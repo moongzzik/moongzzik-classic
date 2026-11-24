@@ -116,29 +116,56 @@ a{color:var(--wineT)}
 .hl li{padding-left:18px;position:relative}
 .hl li::before{content:"";position:absolute;left:2px;top:.7em;width:7px;height:7px;border-radius:50%;background:var(--brass)}
 .pill{font-size:12px;font-weight:600;color:var(--brassT);border:1px solid color-mix(in srgb,var(--brass) 50%,transparent);padding:2px 10px;border-radius:999px;white-space:nowrap}
-/* stage */
-.stage{background:var(--bg);border-radius:16px;padding:10px 10px 0}
-.stage svg{width:100%;height:auto;display:block}
-.zone{cursor:pointer;outline:none}
-.zone path,.zone circle{transition:fill .2s,stroke .2s,opacity .2s}
-.zone path{fill:light-dark(#efe7df,#2a2220);stroke:light-dark(#d8c9b6,#4a3d36);stroke-width:1.2}
-.zone.on path{fill:light-dark(#f6dde3,#4a1a27);stroke:var(--wineT);stroke-width:2}
-.zone.off{opacity:.38}
-.zone:focus-visible path,.zone:focus-visible circle{stroke:var(--brass);stroke-width:3}
-.zone text{fill:var(--ink);font-size:12px;font-weight:600;pointer-events:none}
-.zone.solo circle{fill:var(--wine);stroke:var(--brass);stroke-width:2}
-.zone.solo.on circle{stroke-width:3.5}
-.zone.solo text{fill:#fff;font-size:11px}
-.aud{text-align:center;font-size:13px;color:var(--mute);padding:4px 0 10px}
-.detail{margin-top:12px;border:1px solid var(--line);border-radius:14px;padding:16px}
-.detail .t{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;align-items:center;font-size:13px;color:var(--wineT);font-weight:600}
-.detail h4{font-family:"Noto Serif KR",serif;font-size:18px;margin:6px 0 4px}
-.detail p{font-size:15px;color:var(--mute)}
-.sec{display:block;width:100%;text-align:left;border:1px solid transparent;background:var(--bg);border-radius:14px;padding:14px 16px;min-height:44px}
-.sec[aria-pressed=true]{border-color:var(--wineT);background:var(--soft)}
-.sec.off{opacity:.55}
-.sec b{font-size:15px}.sec small{display:block;color:var(--wineT);font-size:13px;margin:2px 0}
-.sec p{font-size:14px;color:var(--mute);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* stage [수정] 실제 편성 무대 + 악기 도감 */
+.stage{background:var(--bg);border-radius:16px;padding:12px 8px 0}
+.stage svg{width:100%;height:auto;display:block;overflow:visible}
+.floor{fill:light-dark(#efe7df,#211a18);stroke:light-dark(#dccdb9,#3d322d)}
+.seat{cursor:pointer;outline:none}
+.seat circle:not(.hit){transition:fill .2s,r .2s,opacity .2s}
+.seat .hit{fill:transparent}
+.f-str{--fc:light-dark(#a13a55,#e38aa2)}.f-wood{--fc:light-dark(#3f7468,#7fc4b2)}.f-brass{--fc:light-dark(#b07d2b,#e2bd7c)}.f-perc{--fc:light-dark(#5d5a8c,#a9a6dc)}.f-keys{--fc:light-dark(#7a5a96,#c4a6dd)}.f-voice{--fc:light-dark(#2f6d8f,#8cc3e0)}
+.seat circle:not(.hit){fill:var(--fc);opacity:.55}
+.stage svg:has(.sel) .seat:not(.sel):not(.lit) circle:not(.hit){opacity:.28}
+.seat.sel circle:not(.hit){opacity:1}
+.seat.lit circle:not(.hit){opacity:1;fill:var(--brass)}
+.seat.lit:not(.solo-seat) circle:not(.hit){animation:glow 1.6s ease-in-out infinite}
+@keyframes glow{50%{opacity:.55}}
+@media(prefers-reduced-motion:reduce){.seat.lit circle{animation:none!important}}
+.seat:focus-visible circle:not(.hit){stroke:var(--brass);stroke-width:2}
+.solo-seat .solo-dot{opacity:1!important;fill:var(--wine)!important;stroke:var(--brass);stroke-width:2}
+.solo-seat.sel .solo-dot{stroke-width:3.5}
+.solo-seat.lit .solo-dot{stroke:var(--brass);stroke-width:4}
+.solo-seat text{fill:#fff;font-size:11px;font-weight:600;pointer-events:none}
+.cond{fill:var(--ink);opacity:.85}.cond-t{fill:var(--paper);font-size:10px;font-weight:600}
+.sel-t{fill:var(--ink);font-size:14px;font-weight:700;paint-order:stroke;stroke:var(--bg);stroke-width:4px;stroke-linejoin:round}
+.aud{text-align:center;font-size:13px;color:var(--mute);padding:6px 0 10px}
+.ichips{display:flex;flex-direction:column;gap:6px;margin:12px 0}
+.irow{display:grid;grid-template-columns:62px minmax(0,1fr);align-items:center;gap:6px}
+.ifam{font-size:12px;font-weight:600;color:var(--mute);line-height:1.2}
+.iscroll{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
+.iscroll .ichip{flex:none}
+.ichip{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;white-space:nowrap;border-radius:999px;border:1px solid var(--line);background:var(--paper);font-size:14px}
+.ichip i{width:10px;height:10px;border-radius:50%;background:var(--fc);flex:none}
+.ichip small{color:var(--mute);font-size:12px}
+.ichip[aria-pressed=true]{border-color:var(--fc);background:color-mix(in srgb,var(--fc) 14%,var(--paper));font-weight:600}
+.nowp{margin:0 0 10px;font-size:14px;font-weight:600;color:var(--brassT);background:color-mix(in srgb,var(--brass) 12%,transparent);border-radius:12px;padding:8px 12px}
+.ipanel{border:1px solid var(--line);border-radius:16px;padding:16px}
+.ih{display:flex;justify-content:space-between;align-items:start;gap:8px}
+.ih h4{font-family:"Noto Serif KR",serif;font-size:21px;margin:2px 0 0}
+.fam{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--mute);font-weight:600}
+.fam i{width:9px;height:9px;border-radius:50%;background:var(--fc)}
+.irole{font-size:15px;margin-top:8px}
+.ipanel h5{font-size:14px;margin:16px 0 8px;color:var(--wineT)}
+.moments{display:flex;flex-direction:column;gap:6px}
+.mo{display:flex;gap:10px;align-items:center;text-align:left;width:100%;min-height:44px;padding:6px 10px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:inherit;text-decoration:none;font-size:15px}
+.mo .ts{font-variant-numeric:tabular-nums;font-weight:600;font-size:13px;color:#fff;background:var(--wine);border-radius:8px;padding:3px 8px;white-space:nowrap}
+.dex{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 12px;margin:0;font-size:15px}
+.dex dt{color:var(--mute);font-size:13px;font-weight:600;padding-top:2px;white-space:nowrap}.dex dd{margin:0}
+.range{position:relative;height:14px;border-radius:7px;margin-top:4px;background:repeating-linear-gradient(90deg,light-dark(#fff,#2a2220) 0 6px,light-dark(#d9d0c8,#4a3d36) 6px 7px)}
+.range span{position:absolute;top:0;bottom:0;border-radius:7px;background:var(--wine);opacity:.85}
+.range em{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--brass)}
+.rlab{display:flex;justify-content:space-between;font-size:12px;color:var(--mute);margin-top:4px}
+.gp .feat{display:block;font-style:normal;font-size:12px;color:var(--brassT);margin-top:4px}
 /* guide */
 .note{font-size:13px;color:var(--mute);background:var(--bg);border-radius:12px;padding:10px 12px;margin-bottom:12px}
 .gp{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;width:100%;text-align:left;text-decoration:none;color:inherit;border:1px solid var(--line);background:var(--paper);border-radius:16px;padding:14px 16px}
@@ -153,6 +180,15 @@ a{color:var(--wineT)}
 #videoCard{padding:0;overflow:hidden}
 .screen{aspect-ratio:16/9;background:#120d0c;position:relative}
 .screen>div,.screen iframe{position:absolute;inset:0;width:100%;height:100%}
+/* [추가] 재생 중 화면을 내리면 영상을 머리글 아래에 고정 (작은 화면만, 큰 화면은 옆 칸이 이미 따라옴) */
+.pinx{display:none}
+@media(max-width:979px){
+#videoCard.pin::before{content:"";display:block;aspect-ratio:16/9}
+#videoCard.pin .screen{position:fixed;top:var(--pinTop,61px);left:0;right:0;z-index:25;width:100%;max-width:560px;margin:0 auto;box-shadow:0 10px 28px rgba(0,0,0,.28);animation:pinIn .22s ease-out}
+#videoCard.pin .pinx{display:grid;place-items:center;position:fixed;top:calc(var(--pinTop,61px) + 6px);right:max(6px,calc((100vw - 560px)/2 + 6px));z-index:26;width:32px;height:32px;border-radius:50%;border:0;background:rgba(0,0,0,.62);color:#fff;font-size:18px;line-height:1;cursor:pointer}
+@keyframes pinIn{from{transform:translateY(-12px);opacity:.4}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){#videoCard.pin .screen{animation:none}}
+}
 .linkmode{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#fff;text-align:center;padding:16px;background:radial-gradient(circle at 50% 35%,#7a2240,#2a0912 70%)}
 .linkmode a{color:#fff;font-weight:600;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:10px 18px;text-decoration:none}
 .linkmode small{color:#f0d6dc;font-size:13px;max-width:26em}
@@ -336,7 +372,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;text-align:center;font-si
  <div class="res">
   <aside>
     <div id="videoCard" class="card hide">
-      <div class="screen" id="screen"></div>
+      <div class="screen" id="screen"></div><button type="button" class="pinx" id="pinX" aria-label="고정 풀기">×</button>
       <div id="live" class="live hide"><div class="row"><span>지금 듣는 구간</span><span id="liveTime">0:00</span></div><b id="liveTitle"></b><p id="liveDesc"></p></div>
       <div class="vbar"><span id="vTitle"></span><a id="vLink" href="#" target="_blank" rel="noopener noreferrer">유튜브에서 열기</a></div>
       <div class="valt" id="vAlt"></div>
@@ -396,10 +432,12 @@ footer{border-top:1px solid var(--line);padding:22px 0;text-align:center;font-si
     </article>
 
     <article id="s-stage" class="card">
-      <div class="head"><h3>무대 배치도와 악기들</h3><p class="sub">구역을 누르면 어떤 악기가 어떤 소리로 참여하는지 보여요</p></div>
-      <div class="stage"><svg id="stageSvg" viewBox="0 0 520 262" role="group" aria-label="오케스트라 무대 배치도"></svg><div class="aud">객석 · 우리가 듣는 자리</div></div>
-      <div class="detail" aria-live="polite"><div class="t"><span id="dBadge"></span><span id="dTimbre" class="pill"></span></div><h4 id="dTitle"></h4><p id="dDesc"></p></div>
-      <div class="grid2" id="rSecs" style="margin-top:12px"></div>
+      <div class="head"><h3>무대 배치도와 악기 도감</h3><p class="sub">점 하나가 연주자 한 명이에요. 악기를 누르면 생김새·소리·활약하는 순간이 나와요</p></div>
+      <div class="stage"><svg id="stageSvg" viewBox="0 0 400 212" role="group" aria-label="이 곡의 오케스트라 무대"></svg><div class="aud">객석 · 우리가 듣는 자리</div></div>
+      <div class="ichips" id="instChips" role="group" aria-label="이 곡의 악기"></div>
+      <p id="nowPlaying" class="nowp hide" aria-live="polite"></p>
+      <div class="ipanel" id="instPanel" aria-live="polite"></div>
+      <p class="small" id="stageNote"></p>
     </article>
 
     <article id="s-guide" class="card">
@@ -670,6 +708,22 @@ function userPrompt() {
 
 // ============ 유튜브: 설치형은 바로 재생, claude.ai 안은 링크로 열기 ============
 let ytMode = "pending", ytPlayer = null, ytTimer = null;
+// [추가] 재생 중 영상 고정: playing=재생 중(일시정지 포함), pinOff=사용자가 × 로 닫음(다음 재생까지)
+const pinState = { playing: false, off: false };
+function updatePin() {
+  const card = $("#videoCard");
+  if (!card) return;
+  const small = matchMedia("(max-width:979px)").matches;
+  const top = ($(".top") ? $(".top").getBoundingClientRect().bottom : 60);
+  const want = small && pinState.playing && !pinState.off && !card.classList.contains("hide") && card.getBoundingClientRect().bottom < top + 40;
+  if (want !== card.classList.contains("pin")) {
+    card.style.setProperty("--pinTop", Math.max(0, Math.round(top)) + "px");
+    card.classList.toggle("pin", want);
+  }
+}
+let pinRaf = 0;
+addEventListener("scroll", () => { if (!pinRaf) pinRaf = requestAnimationFrame(() => { pinRaf = 0; updatePin(); }); }, { passive: true });
+addEventListener("resize", () => updatePin());
 window.onYouTubeIframeAPIReady = () => { ytMode = "embed"; if (S.video && !$("#result").classList.contains("hide")) renderVideo(); };
 {
   const t = document.createElement("script");
@@ -721,7 +775,7 @@ async function ytMeta(id) {
   return { videoId: id, url, title: "", author: "" };
 }
 function stopSync() { if (ytTimer) { clearInterval(ytTimer); ytTimer = null; } }
-function killPlayer() { stopSync(); if (ytPlayer && ytPlayer.destroy) { try { ytPlayer.destroy(); } catch {} } ytPlayer = null; }
+function killPlayer() { stopSync(); pinState.playing = false; updatePin(); if (ytPlayer && ytPlayer.destroy) { try { ytPlayer.destroy(); } catch {} } ytPlayer = null; }
 function renderVideo() {
   const v = S.video, card = $("#videoCard"), scr = $("#screen");
   $("#live").classList.add("hide");
@@ -752,7 +806,7 @@ function renderVideo() {
         // [추가] 올린 사람이 다른 사이트 재생을 막은 영상(101·150) 등은 유튜브 앱으로 열기로 전환
         onError: e => { if (v.libDefault) { nextLibVideo(e && e.data === 100 ? "비공개이거나 지워진 영상이라 다른 연주로 바꿨어요." : "앱 안 재생이 막힌 영상이라 다른 연주로 바꿨어요."); return; } markBad(v.videoId); toast(e && (e.data === 101 || e.data === 150) ? "이 영상은 앱 안 재생이 막혀 있어요. 시간을 누르면 유튜브에서 열려요." : "영상을 불러오지 못했어요. 유튜브에서 열어 주세요.", true); renderVideo(); renderGuide(); },
         onReady: e => applyScale(e.target.getDuration ? e.target.getDuration() : 0),
-        onStateChange: e => { if (e.data === YT.PlayerState.PLAYING) { stopSync(); ytTimer = setInterval(syncLive, 1000); } else stopSync(); }
+        onStateChange: e => { if (e.data === YT.PlayerState.PLAYING) { if (!pinState.playing) pinState.off = false; pinState.playing = true; stopSync(); ytTimer = setInterval(syncLive, 1000); } else { stopSync(); if (e.data === YT.PlayerState.ENDED) pinState.playing = false; } updatePin(); } // [수정] 재생 상태에 따라 영상 고정
       }
     });
   } else {
@@ -792,6 +846,7 @@ function markNow(idx) {
   if (idx === S.now) return;
   S.now = idx;
   document.querySelectorAll(".gp").forEach((el, i) => el.classList.toggle("now", i === idx));
+  lightStage(idx); // [추가] 이 구간에서 활약하는 악기에 무대 불 켜기
 }
 
 // ============ 메인 흐름 ============
@@ -921,63 +976,248 @@ function renderGuide() {
     : S.scaleNote || d.guideNote || (S.video && S.video.libDefault ? "시간은 보통 연주를 기준으로 한 대략적인 위치예요. 위 영상과는 조금 다를 수 있어요." : null) || (d.isCompilation ? "여러 곡이 담긴 영상이라 시간은 대표 곡 기준이에요. 영상의 실제 위치와 다를 수 있어요." : "시간은 이 곡의 보통 연주 길이를 기준으로 한 대략적인 위치예요. 연주마다 몇십 초씩 다를 수 있어요.");
   $("#rGuide").innerHTML = pts.length ? pts.map((p, i) => {
     const sec = ptSec(p, i);
-    const inner = `<span class="ts">${fmt(sec)}</span><span>${p.movement ? `<small>${esc(p.movement)}</small>` : ""}<b>${esc(p.title)}</b><p>${esc(p.description)}</p></span>`;
+    const ft = S.orch && S.orch.feats && S.orch.feats[i] ? featNames(S.orch.feats[i]) : ""; // [추가] 돋보이는 악기
+    const inner = `<span class="ts">${fmt(sec)}</span><span>${p.movement ? `<small>${esc(p.movement)}</small>` : ""}<b>${esc(p.title)}</b><p>${esc(p.description)}</p>${ft ? `<em class="feat">돋보이는 악기 · ${esc(ft)}</em>` : ""}</span>`;
     return v && (ytMode !== "embed" || embedBlocked(v.videoId)) // [수정] 임베드가 막힌 영상도 유튜브 링크로
-      ? `<a class="gp" href="${esc(ytLink(v.videoId, sec))}" target="_blank" rel="noopener noreferrer">${inner}</a>`
+      ? `<a class="gp" data-gi="${i}" href="${esc(ytLink(v.videoId, sec))}" target="_blank" rel="noopener noreferrer">${inner}</a>`
       : `<button class="gp" type="button" data-seek="${i}">${inner}</button>`;
   }).join("") : '<p class="empty">이 곡은 구간 가이드가 없어요.</p>';
   S.now = -1;
+  if (S.orch && S.inst) pickInst(S.inst); // [추가] 영상이 바뀌면 악기 카드의 '돋보이는 순간' 링크도 새로
 }
 
-// 무대 배치도: 반원 띠를 계산해 그림
-const CX = 260, CY = 250;
-const pt = (r, a) => [CX + r * Math.cos(a * Math.PI / 180), CY + r * Math.sin(a * Math.PI / 180)];
-function band(r1, r2, a1, a2) {
-  const [x1, y1] = pt(r2, a1), [x2, y2] = pt(r2, a2), [x3, y3] = pt(r1, a2), [x4, y4] = pt(r1, a1), big = a2 - a1 > 180 ? 1 : 0;
-  return `M${x1.toFixed(1)} ${y1.toFixed(1)}A${r2} ${r2} 0 ${big} 1 ${x2.toFixed(1)} ${y2.toFixed(1)}L${x3.toFixed(1)} ${y3.toFixed(1)}A${r1} ${r1} 0 ${big} 0 ${x4.toFixed(1)} ${y4.toFixed(1)}Z`;
+// ============ [추가] 악기 도감 · 실제 편성 무대 · 활약 순간 · 재생 중 무대 불 켜기 ============
+// fam: str 현악기, wood 목관악기, brass 금관악기, perc 타악기, keys 하프·건반, voice 노래
+// lo/hi: 소리 높이 범위(피아노 건반 번호, 가운데 '도'=60). 음높이가 없는 타악기는 null
+const INST = {
+  vn1: { n: "제1바이올린", fam: "str", al: ["제1바이올린"], lo: 55, hi: 100, look: "어깨에 얹고 턱으로 받친 채 활로 켜는, 현악기 중 가장 작은 악기예요. 줄은 4개(솔·레·라·미).", tone: "밝고 높게 노래해요. 오케스트라의 큰 선율을 가장 자주 맡아요.", fact: "제1바이올린 맨 앞자리 연주자가 '악장(콘서트마스터)'이에요. 지휘자와 오케스트라를 잇는 리더예요." },
+  vn2: { n: "제2바이올린", fam: "str", al: ["제2바이올린"], lo: 55, hi: 100, look: "제1바이올린과 똑같은 악기예요. 맡는 역할만 달라요.", tone: "제1바이올린 아래에서 화음과 리듬을 채우고, 때로는 선율을 주고받아요.", fact: "제1·제2바이올린을 무대 양쪽에 마주 보게 앉히는 오케스트라도 있어요. 소리가 좌우로 주고받는 맛이 살아나요." },
+  vn: { n: "바이올린", fam: "str", al: ["바이올린"], lo: 55, hi: 100, look: "어깨에 얹고 턱으로 받친 채 활로 켜는, 현악기 중 가장 작은 악기예요. 줄은 4개(솔·레·라·미).", tone: "밝고 높으며, 사람의 노래처럼 길게 이어 부를 수 있어요.", fact: "활의 털은 말총이에요. 송진을 발라야 줄을 붙잡아 소리가 나요." },
+  va: { n: "비올라", fam: "str", al: ["비올라"], lo: 48, hi: 88, look: "바이올린보다 조금 크고, 같은 자세로 연주해요. 줄은 도·솔·레·라.", tone: "바이올린보다 낮고 부드러운, 살짝 그늘진 소리예요. 화음의 가운데를 채워요.", fact: "악보를 '알토 음자리표'로 읽는 거의 유일한 악기예요." },
+  vc: { n: "첼로", fam: "str", al: ["첼로"], lo: 36, hi: 81, look: "의자에 앉아 무릎 사이에 세우고 연주해요. 바닥에 꽂는 '엔드핀'이 있어요.", tone: "사람 목소리와 가장 비슷한 음역이라고 해요. 깊고 따뜻해요.", fact: "줄은 비올라와 같은 도·솔·레·라인데, 한 옥타브 낮아요." },
+  cb: { n: "콘트라베이스", fam: "str", al: ["콘트라베이스", "더블베이스"], lo: 28, hi: 67, look: "현악기 중 가장 커서 서서 치거나 높은 의자에 앉아 연주해요.", tone: "가장 낮은 소리로 오케스트라의 바닥을 받쳐요.", fact: "악보에 적힌 음보다 한 옥타브 낮은 소리가 나요." },
+  picc: { n: "피콜로", fam: "wood", al: ["피콜로"], lo: 74, hi: 108, look: "플루트의 절반쯤 되는 작은 악기예요.", tone: "오케스트라에서 가장 높고 반짝이는 소리. 큰 합주 위로도 뚫고 나와요.", fact: "플루트보다 한 옥타브 높은 소리가 나요. 보통 플루트 연주자가 바꿔 들고 불어요." },
+  fl: { n: "플루트", fam: "wood", al: ["플루트"], lo: 60, hi: 96, look: "옆으로 들고, 리드 없이 구멍 가장자리에 바람을 불어 소리를 내요.", tone: "맑고 가벼운 숨결 같은 소리. 새소리를 흉내 낼 때 자주 써요.", fact: "지금은 금속이지만 옛날엔 나무로 만들어서 '목관악기'예요." },
+  oboedamore: { n: "오보에 다모레", fam: "wood", al: ["오보에 다모레"], lo: 56, hi: 83, look: "오보에와 비슷하지만 조금 크고, 끝이 둥근 공 모양이에요.", tone: "오보에보다 조금 낮고 부드러운 소리. '사랑의 오보에'라는 뜻이에요.", fact: "바흐 시대에 사랑받다 잊혔는데, 라벨이 '볼레로'에서 다시 불러냈어요." },
+  ob: { n: "오보에", fam: "wood", al: ["오보에"], lo: 58, hi: 93, look: "두 장의 얇은 갈대 조각(겹리드)을 입에 물고 불어요.", tone: "맑고 또렷하며 조금 애잔한, 코맹맹이 같은 소리예요.", fact: "연주회 전 오케스트라는 오보에가 내는 '라' 음에 맞춰 조율해요." },
+  eh: { n: "잉글리시 호른", fam: "wood", al: ["잉글리시 호른"], lo: 52, hi: 84, look: "오보에보다 길고, 끝이 둥근 공 모양이며 입 쪽 관이 살짝 휘어 있어요.", tone: "오보에보다 낮고 그리움이 묻은 듯한 깊은 소리예요.", fact: "이름과 달리 호른도 아니고 영국 악기도 아니에요. 이름의 유래는 확실하지 않아요." },
+  bcl: { n: "베이스 클라리넷", fam: "wood", al: ["베이스 클라리넷"], lo: 34, hi: 75, look: "클라리넷보다 훨씬 길고, 목과 끝이 색소폰처럼 휘어 있어요.", tone: "클라리넷보다 한 옥타브 낮은, 어둡고 부드러운 소리예요.", fact: "'호두까기 인형'의 '사탕 요정의 춤'에서 첼레스타에 낮게 대답해요." },
+  cl: { n: "클라리넷", fam: "wood", al: ["클라리넷"], lo: 50, hi: 94, look: "검은 나무 관에 한 장의 리드(홑리드)를 붙여 불어요.", tone: "낮은 음은 따뜻하고 어둡게, 높은 음은 맑게. 음역이 아주 넓어요.", fact: "모차르트가 이 악기를 무척 사랑해 협주곡과 오중주를 남겼어요." },
+  cbsn: { n: "콘트라바순", fam: "wood", al: ["콘트라바순"], lo: 22, hi: 53, look: "바순보다 훨씬 큰 악기로, 긴 관을 여러 번 접었어요.", tone: "오케스트라에서 가장 낮은 축에 드는 묵직한 소리예요.", fact: "펼치면 관 길이가 5미터가 넘어요." },
+  bsn: { n: "바순", fam: "wood", al: ["바순"], lo: 34, hi: 76, look: "길쭉한 나무 관을 반으로 접은 모양이고, 겹리드로 불어요.", tone: "낮고 둥글며, 때로는 익살스럽고 때로는 쓸쓸한 소리예요.", fact: "펼치면 관 길이가 약 2.5미터예요." },
+  sax: { n: "색소폰", fam: "wood", al: ["색소폰"], lo: 49, hi: 80, look: "금속으로 만들었지만 홑리드로 불어서 목관악기로 분류해요.", tone: "부드럽고 노래하는 듯한, 사람 목소리 같은 소리예요.", fact: "1840년대 벨기에의 아돌프 삭스가 발명했어요. 오케스트라에서는 드물게 나와요." },
+  hn: { n: "호른", fam: "brass", al: ["호른"], lo: 35, hi: 77, look: "둥글게 감긴 관 끝에 큰 나팔이 달렸고, 오른손을 나팔 안에 넣고 연주해요.", tone: "부드럽고 따뜻하며 멀리서 부르는 듯한 소리. 목관과도 잘 어울려요.", fact: "사냥 나팔에서 왔어요. 감긴 관을 펴면 약 3.7미터예요." },
+  cor: { n: "코넷", fam: "brass", al: ["코넷"], lo: 54, hi: 82, look: "트럼펫과 비슷하지만 더 짧고 통통해요.", tone: "트럼펫보다 둥글고 부드러운 소리예요.", fact: "관이 점점 넓어지는 모양이라 소리가 더 부드러워요." },
+  tp: { n: "트럼펫", fam: "brass", al: ["트럼펫"], lo: 54, hi: 86, look: "피스톤 3개가 달린 금관악기예요.", tone: "금관 중 가장 높고 밝은 소리. 팡파르와 승리의 순간에 빛나요.", fact: "입술을 떨어서 소리를 내요. 입술의 긴장으로 음 높이를 바꿔요." },
+  tbn: { n: "트롬본", fam: "brass", al: ["베이스 트롬본", "트롬본"], lo: 40, hi: 77, look: "밀고 당기는 긴 '슬라이드'로 음 높이를 바꿔요.", tone: "웅장하고 엄숙하며, 미끄러지듯 이어지는 소리(글리산도)도 낼 수 있어요.", fact: "오랫동안 교회 음악에 쓰이다가, 베토벤 교향곡 5번 무렵부터 교향곡에 본격적으로 들어왔어요." },
+  tuba: { n: "튜바", fam: "brass", al: ["튜바"], lo: 26, hi: 65, look: "금관악기 중 가장 크고, 나팔이 위를 향해요.", tone: "금관 중 가장 낮고 묵직한 소리로 바닥을 받쳐요.", fact: "1835년 무렵 독일에서 발명된, 비교적 새로운 악기예요." },
+  timp: { n: "팀파니", fam: "perc", al: ["팀파니"], lo: 38, hi: 60, look: "구리 솥 모양의 큰 북 여러 개를 둘러놓고 쳐요.", tone: "음 높이가 있는 북이라 천둥처럼 울리면서도 화음에 맞춰요.", fact: "발 페달로 가죽의 팽팽함을 바꿔 음 높이를 조절해요." },
+  bd: { n: "큰북", fam: "perc", al: ["큰북"], lo: null, hi: null, look: "옆으로 세운 아주 큰 북이에요.", tone: "가슴이 울리는 낮은 '쿵' 소리예요.", fact: "아주 작게 치면 멀리서 들리는 천둥 같은 효과를 낼 수 있어요." },
+  sd: { n: "작은북", fam: "perc", al: ["작은북"], lo: null, hi: null, look: "납작한 북 아래쪽에 가는 철사줄(스네어)이 붙어 있어요.", tone: "또렷하고 찰랑이는 '따닥' 소리. 행진의 리듬을 만들어요.", fact: "라벨의 '볼레로'에서는 처음부터 끝까지 같은 리듬을 쉬지 않고 쳐요." },
+  cym: { n: "심벌즈", fam: "perc", al: ["심벌즈"], lo: null, hi: null, look: "두 장의 둥근 금속판이에요.", tone: "맞부딪치면 '쨍' 하고 번쩍이는 소리가 퍼져요.", fact: "드보르자크 '신세계 교향곡'에서는 40분 넘는 곡에 딱 한 번 울려요." },
+  tri: { n: "트라이앵글", fam: "perc", al: ["트라이앵글"], lo: null, hi: null, look: "쇠막대를 구부린 삼각형이에요. 한쪽 모서리가 열려 있어요.", tone: "작고 맑게 반짝이는 소리예요.", fact: "모서리가 열려 있어야 소리가 길고 맑게 울려요." },
+  tamb: { n: "탬버린", fam: "perc", al: ["탬버린"], lo: null, hi: null, look: "둥근 테에 작은 금속판(징글)이 달린 북이에요.", tone: "찰랑찰랑 흥겨운 소리예요.", fact: "흔들거나 치거나 엄지로 문질러 떨리는 소리를 내요." },
+  cast: { n: "캐스터네츠", fam: "perc", al: ["캐스터네츠"], lo: null, hi: null, look: "조개껍데기 모양의 나무 두 쪽이에요.", tone: "'딱딱' 경쾌한 소리로 스페인 춤의 리듬을 만들어요.", fact: "스페인 무용수들은 손에 끼고 춤추며 직접 쳐요." },
+  glock: { n: "글로켄슈필", fam: "perc", al: ["글로켄슈필"], lo: 79, hi: 108, look: "쇠막대를 피아노 건반처럼 늘어놓은 악기예요.", tone: "작은 종들이 울리는 듯 맑고 높은 소리예요.", fact: "독일어로 '종 놀이'라는 뜻이에요." },
+  tam: { n: "탐탐", fam: "perc", al: ["탐탐"], lo: null, hi: null, look: "커다란 금속 징이에요.", tone: "길고 어둡게 번지는 '우웅' 소리예요.", fact: "차이콥스키 '비창' 교향곡 끝에서 딱 한 번 낮게 울려요." },
+  harp: { n: "하프", fam: "keys", al: ["하프"], lo: 23, hi: 104, look: "큰 틀에 줄 47개를 매고, 발로 페달 7개를 밟아 반음을 바꿔요.", tone: "물결처럼 흐르는 맑은 소리. 줄을 손가락으로 뜯어요.", fact: "줄 색이 달라요. 빨간(또는 진한) 줄이 '도', 검은 줄이 '파'라서 위치를 찾아요." },
+  cel: { n: "첼레스타", fam: "keys", al: ["첼레스타"], lo: 60, hi: 108, look: "작은 피아노처럼 생겼지만, 건반을 누르면 망치가 쇠막대를 때려요.", tone: "요정의 종소리 같은 영롱한 소리예요.", fact: "1886년 파리에서 발명되었고, 차이콥스키가 '호두까기 인형'에 쓰며 유명해졌어요." },
+  hpsd: { n: "하프시코드", fam: "keys", al: ["하프시코드", "쳄발로"], lo: 29, hi: 89, look: "피아노 이전의 건반 악기예요. 건반을 누르면 작은 깃 조각이 줄을 뜯어요.", tone: "찰랑찰랑 반짝이는 소리. 세게·여리게 조절은 어려워요.", fact: "바로크 음악에서 화음의 바닥(통주저음)을 맡았어요." },
+  org: { n: "오르간", fam: "keys", al: ["오르간"], lo: 24, hi: 108, look: "건반을 누르면 파이프에 바람이 들어가 소리가 나요.", tone: "길게 끝없이 이어지는 웅장한 소리예요.", fact: "발로 치는 페달 건반까지 있어서 손과 발을 모두 써요." },
+  pf: { n: "피아노", fam: "keys", al: ["피아노"], lo: 21, hi: 108, look: "건반 88개. 건반을 누르면 펠트 망치가 줄을 때려요.", tone: "여리게부터 세게까지 자유롭고, 혼자서 선율과 화음을 모두 낼 수 있어요.", fact: "1700년 무렵 이탈리아의 크리스토포리가 발명했어요. 정식 이름 '피아노포르테'는 '여리게-세게'라는 뜻이에요." },
+  chorus: { n: "합창", fam: "voice", al: ["합창"], lo: 40, hi: 84, look: "소프라노·알토·테너·베이스 네 성부가 함께 노래해요.", tone: "여러 사람의 목소리가 하나로 모인 넓고 따뜻한 소리예요.", fact: "베토벤 교향곡 9번은 교향곡에 합창을 넣은 대표적인 곡이에요." },
+  voice: { n: "성악가", fam: "voice", al: ["메조소프라노", "소프라노", "테너", "바리톤", "독창", "노래"], lo: 48, hi: 84, look: "악기 없이 자기 몸이 악기예요. 숨과 몸 전체를 울려 노래해요.", tone: "말(가사)과 감정을 함께 전하는, 가장 사람다운 소리예요.", fact: "여성은 높은 순서로 소프라노·메조소프라노·알토, 남성은 테너·바리톤·베이스로 나눠요." }
+};
+const FAM = { str: { n: "현악기", sec: "strings" }, wood: { n: "목관악기", sec: "woodwinds" }, brass: { n: "금관악기", sec: "brass" }, perc: { n: "타악기", sec: "percussion" }, keys: { n: "하프·건반", sec: "percussion" }, voice: { n: "노래", sec: "percussion" } };
+const ALIASES = Object.entries(INST).flatMap(([k, v]) => v.al.map(a => [a, k])).sort((a, b) => b[0].length - a[0].length);
+// 문장에서 악기 이름 찾기 (긴 이름부터, 찾은 자리는 지워서 '호른'이 '잉글리시 호른'과 겹치지 않게)
+function findInst(text) {
+  let t = " " + String(text || "") + " ", found = [];
+  for (const [a, k] of ALIASES) {
+    let i;
+    while ((i = t.indexOf(a)) !== -1) { found.push({ k, i, end: i + a.length }); t = t.slice(0, i) + "\u0000".repeat(a.length) + t.slice(i + a.length); }
+  }
+  return found.sort((x, y) => x.i - y.i);
 }
-const lbl = (r, a, t, extra) => { const [x, y] = pt(r, a); return `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle"${extra || ""}>${t}</text>`; };
-function buildStage() {
-  const z = (id, name, body) => `<g class="zone" id="z-${id}" data-zone="${id}" tabindex="0" role="button" aria-label="${name}">${body}</g>`;
-  $("#stageSvg").innerHTML =
-    z("percussion", "타악기·하프·건반", `<path d="${band(140, 226, 182, 218)}"/><path d="${band(140, 226, 322, 358)}"/>${lbl(185, 199, "하프·건반")}${lbl(185, 341, "타악기")}`) +
-    z("brass", "금관악기", `<path d="${band(184, 226, 220, 320)}"/>${lbl(205, 270, "금관악기")}`) +
-    z("woodwinds", "목관악기", `<path d="${band(140, 182, 220, 320)}"/>${lbl(161, 270, "목관악기")}`) +
-    z("strings", "현악기", `<path d="${band(84, 138, 180, 270)}"/><path d="${band(84, 138, 270, 360)}"/>${lbl(112, 222, "바이올린")}${lbl(112, 318, "비올라·첼로")}`) +
-    `<g class="zone solo" id="z-solo" data-zone="solo" tabindex="0" role="button" aria-label="독주자"><circle cx="212" cy="232" r="26"/><text x="212" y="229" text-anchor="middle">독주</text><text id="soloShort" x="212" y="244" text-anchor="middle" style="font-size:10px;font-weight:400">주인공</text></g>` +
-    `<rect x="243" y="232" width="34" height="18" rx="6" fill="currentColor" opacity=".85"/><text x="260" y="245" text-anchor="middle" style="font-size:10px;fill:var(--paper);font-weight:600">지휘</text>`;
-  $("#stageSvg").style.color = "var(--ink)";
+// 편성 문장 → [{key, count, explicit}]
+function parseOrch(piece) {
+  const out = [], add = (k, c, ex, sn) => { const o = out.find(x => x.key === k); if (o) { if (ex) { o.count = Math.max(o.explicit ? o.count : 0, c); o.explicit = true; } } else out.push({ key: k, count: c, explicit: ex, secNum: sn }); };
+  for (const s of piece.orchestraSections || []) {
+    if (!s.used) continue;
+    let t = String(s.instruments || "").replace(/제\s*1\s*[·,]\s*2\s*바이올린/g, "제1바이올린, 제2바이올린").replace(/\([^)]*\)/g, "");
+    const secNum = /\d/.test(t);
+    for (const seg of t.split(/[,，、]|\s및\s|\s그리고\s/)) {
+      if (/없음|사용되지/.test(seg)) continue;
+      const hits = findInst(seg);
+      if (!hits.length) continue;
+      const use = /또는/.test(seg) ? hits.slice(0, 1) : hits;
+      for (const h of use) {
+        const m = seg.slice(h.end - 1).match(/^\D{0,3}?(\d+)/);
+        add(h.k, m ? Number(m[1]) : 0, !!m, secNum);
+      }
+    }
+  }
+  // 현악기 인원: 숫자가 하나라도 적혀 있으면(실내악) 나머지는 1명, 아니면 시대별 보통 편성
+  const strs = out.filter(o => INST[o.key].fam === "str");
+  const anyEx = strs.some(o => o.explicit);
+  const small = /바로크|고전/.test(piece.era || "");
+  const def = small ? { vn1: 8, vn2: 6, vn: 8, va: 4, vc: 4, cb: 2 } : { vn1: 12, vn2: 10, vn: 12, va: 8, vc: 8, cb: 6 };
+  for (const o of out) {
+    if (o.count) continue;
+    if (INST[o.key].fam === "str") o.count = anyEx ? 1 : def[o.key] || 4;
+    else if (o.key === "chorus") o.count = 32;
+    else if (/wood|brass/.test(INST[o.key].fam) && !o.secNum && !["picc", "eh", "bcl", "cbsn", "tuba", "oboedamore", "sax"].includes(o.key)) { o.count = 2; o.approx = true; } // 편성 수가 전혀 안 적힌 관악기는 보통 2명
+    else o.count = 1;
+  }
+  return { list: out, stringsTypical: strs.length > 0 && !anyEx };
+}
+function soloOf(piece) {
+  const h = findInst(piece.soloInstrument || "")[0];
+  return h ? h.k : null;
+}
+// 구간 설명에서 돋보이는 악기 찾기
+function featOf(pt, orch, solo) {
+  const t = (pt.title || "") + " " + (pt.description || "");
+  const keys = new Set(), has = k => orch.list.some(o => o.key === k), byFam = f => orch.list.filter(o => INST[o.key].fam === f).map(o => o.key);
+  for (const h of findInst(t)) {
+    const k = h.k;
+    if (k === solo || (solo && INST[solo].fam === "voice" && INST[k].fam === "voice" && k !== "chorus")) { keys.add("solo"); continue; }
+    if (k === "vn" && !has("vn")) { ["vn1", "vn2"].filter(has).forEach(x => keys.add(x)); continue; }
+    if (has(k)) keys.add(k);
+  }
+  if (/낮은 현악기/.test(t)) ["vc", "cb"].filter(has).forEach(x => keys.add(x));
+  else if (/현악기|현이 /.test(t)) byFam("str").forEach(x => keys.add(x));
+  if (/목관/.test(t)) byFam("wood").forEach(x => keys.add(x));
+  if (/금관/.test(t)) byFam("brass").forEach(x => keys.add(x));
+  if (/타악기/.test(t)) byFam("perc").forEach(x => keys.add(x));
+  if (/오케스트라 전체|모두가|모두 함께|합주/.test(t)) orch.list.forEach(o => keys.add(o.key));
+  if (/독주|혼자/.test(t) && solo) keys.add("solo");
+  if (!keys.size) { if (solo) keys.add("solo"); else byFam("str").forEach(x => keys.add(x)); }
+  if (!keys.size && orch.list.length) keys.add(orch.list[0].key);
+  return [...keys];
+}
+const instName = k => k === "solo" ? (S.orch && S.orch.solo ? INST[S.orch.solo].n + "(독주)" : "독주") : (INST[k] ? INST[k].n : k);
+const featNames = keys => {
+  const o = S.orch; if (!o) return "";
+  const fams = {};
+  keys.forEach(k => { if (k === "solo") return; const f = INST[k].fam; (fams[f] = fams[f] || []).push(k); });
+  const parts = keys.includes("solo") ? [instName("solo")] : [];
+  for (const [f, ks] of Object.entries(fams)) {
+    const all = o.list.filter(x => INST[x.key].fam === f).length;
+    if (ks.length > 2 && ks.length === all) parts.push(FAM[f].n); else ks.forEach(k => parts.push(INST[k].n));
+  }
+  return parts.join(", ");
+};
+
+// 무대 그리기 (viewBox 400×212, 객석은 아래)
+const SX = 200, SY = 202;
+const P = (r, a) => [SX + r * Math.cos(a * Math.PI / 180), SY + r * Math.sin(a * Math.PI / 180)];
+const SEATZ = {
+  str: { rows: [72, 86, 100], a1: 184, a2: 356 },
+  wood: { rows: [118, 132], a1: 222, a2: 318 },
+  brass: { rows: [150, 164], a1: 224, a2: 316 },
+  keys: { rows: [122, 140, 158], a1: 188, a2: 219 },
+  perc: { rows: [122, 140, 158], a1: 321, a2: 352 },
+  voice: { rows: [180, 192], a1: 200, a2: 340 }
+};
+function layoutSeats(orch) {
+  const seats = {};
+  for (const [fam, z] of Object.entries(SEATZ)) {
+    const items = orch.list.filter(o => INST[o.key].fam === fam);
+    if (!items.length) continue;
+    const total = items.reduce((s, o) => s + o.count, 0), span = z.a2 - z.a1;
+    let a = z.a1;
+    for (const o of items) {
+      const w = span * o.count / total, b = a + w, mid = (a + b) / 2;
+      const pos = [];
+      // 앞줄부터 채우기: 줄마다 들어갈 자리 수 = 호의 길이 / 간격
+      let left = o.count, gap = 11.5;
+      for (let tries = 0; tries < 6; tries++) {
+        const cap = z.rows.map(r => Math.max(1, Math.floor((Math.PI * r * w / 180) / gap)));
+        if (cap.reduce((s, c) => s + c, 0) >= o.count) break;
+        gap *= 0.85;
+      }
+      for (const r of z.rows) {
+        if (left <= 0) break;
+        const cap = Math.max(1, Math.floor((Math.PI * r * w / 180) / gap)), n = Math.min(cap, left);
+        for (let j = 0; j < n; j++) { const ang = n === 1 ? mid : a + (w * (j + 0.5)) / n; pos.push(P(r, ang)); }
+        left -= n;
+      }
+      seats[o.key] = { pos, mid, r: z.rows[0], rOut: z.rows[z.rows.length - 1] };
+      a = b;
+    }
+  }
+  return seats;
 }
 function renderStage() {
   const d = S.piece;
-  const solo = String(d.soloInstrument || "").trim();
-  $("#soloShort").textContent = solo ? solo.split(/[(\s·,]/)[0].slice(0, 6) : "없음";
-  $("#z-solo").classList.toggle("off", !solo);
-  d.orchestraSections.forEach(s => $("#z-" + s.stageId).classList.toggle("off", !s.used));
-  $("#rSecs").innerHTML = d.orchestraSections.map(s =>
-    `<button class="sec${s.used ? "" : " off"}" type="button" data-zone="${s.stageId}" aria-pressed="false"><b>${esc(s.family)}</b><small>${esc(s.used ? s.instruments : "이 곡에는 나오지 않아요")}</small><p>${esc(s.used ? s.role : "")}</p></button>`).join("");
-  pickZone(solo ? "solo" : (d.orchestraSections.find(s => s.used) || { stageId: "strings" }).stageId);
-}
-function pickZone(id) {
-  const d = S.piece; if (!d) return;
-  S.zone = id;
-  document.querySelectorAll("#stageSvg .zone").forEach(g => g.classList.toggle("on", g.dataset.zone === id));
-  document.querySelectorAll("#rSecs .sec").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.zone === id)));
-  if (id === "solo") {
-    const solo = String(d.soloInstrument || "").trim();
-    $("#dBadge").textContent = solo ? "무대의 주인공 · 독주" : "이 곡은 독주자 없이 함께 연주해요";
-    $("#dTimbre").textContent = d.soloTimbre || "";
-    $("#dTimbre").classList.toggle("hide", !d.soloTimbre);
-    $("#dTitle").textContent = solo || "오케스트라 전체";
-    $("#dDesc").textContent = d.instrumentDialogue || "";
-    return;
+  const orch = parseOrch(d);
+  let solo = soloOf(d);
+  if (solo === "chorus") { if (!orch.list.some(o => o.key === "chorus")) orch.list.push({ key: "chorus", count: 32, explicit: false }); solo = "voice"; }
+  S.orch = { list: orch.list, solo, typical: orch.stringsTypical };
+  S.orch.feats = (d.listeningPoints || []).map(p => featOf(p, S.orch, solo));
+  const seats = layoutSeats(S.orch);
+  S.orch.seats = seats;
+  let svg = `<path class="floor" d="M${SX - 196} ${SY}A196 196 0 0 1 ${SX + 196} ${SY}Z"/>`;
+  for (const o of S.orch.list) {
+    const s = seats[o.key]; if (!s) continue;
+    svg += `<g class="seat f-${INST[o.key].fam}" data-inst="${o.key}" role="button" tabindex="0" aria-label="${esc(INST[o.key].n)} ${o.count}">` +
+      s.pos.map(([x, y]) => `<circle class="hit" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.6"/>`).join("") + `</g>`;
   }
-  const s = d.orchestraSections.find(x => x.stageId === id);
-  $("#dBadge").textContent = s.family + " 구역";
-  $("#dTimbre").textContent = s.used ? (s.timbre || "") : "";
-  $("#dTimbre").classList.toggle("hide", !(s.used && s.timbre));
-  $("#dTitle").textContent = s.used ? (s.instruments || s.family) : "이 곡에는 나오지 않아요";
-  $("#dDesc").textContent = s.used ? (s.role || "") : `작곡가는 이 곡에 ${s.family}를 쓰지 않았어요. 그만큼 다른 악기들의 색이 또렷하게 들려요.`;
+  // 독주자 자리 (지휘자 왼쪽 앞)
+  if (solo) svg += `<g class="seat solo-seat f-${INST[solo].fam}" data-inst="solo" role="button" tabindex="0" aria-label="독주 ${esc(INST[solo].n)}"><circle class="hit" cx="${SX - 38}" cy="${SY - 20}" r="20"/><circle class="solo-dot" cx="${SX - 38}" cy="${SY - 20}" r="16"/><text x="${SX - 38}" y="${SY - 16}" text-anchor="middle">${esc(INST[solo].n.slice(0, 4))}</text></g>`;
+  svg += `<rect x="${SX - 13}" y="${SY - 26}" width="26" height="15" rx="5" class="cond"/><text x="${SX}" y="${SY - 15}" text-anchor="middle" class="cond-t">지휘</text>`;
+  $("#stageSvg").innerHTML = svg;
+  // 악기 칩
+  const chip = (k, label, cnt, fam) => `<button type="button" class="ichip f-${fam}" data-inst="${k}" aria-pressed="false"><i></i>${esc(label)}${cnt ? `<small>${esc(cnt)}</small>` : ""}</button>`;
+  const cnt = o => (INST[o.key].fam === "str" && S.orch.typical) || o.approx ? "약 " + o.count : String(o.count);
+  const rows = (solo ? `<div class="irow"><span class="ifam">주인공</span><div class="iscroll">${chip("solo", INST[solo].n, INST[solo].fam === "voice" ? "노래" : "독주", INST[solo].fam)}</div></div>` : "") +
+    ["str", "wood", "brass", "keys", "perc", "voice"].map(f => {
+      const items = S.orch.list.filter(o => INST[o.key].fam === f);
+      return items.length ? `<div class="irow"><span class="ifam f-${f}">${FAM[f].n}</span><div class="iscroll">${items.map(o => chip(o.key, INST[o.key].n, cnt(o), f)).join("")}</div></div>` : "";
+    }).join("");
+  $("#instChips").innerHTML = rows;
+  $("#stageNote").textContent = !solo && !S.orch.list.length ? "" : (S.orch.typical ? "점 하나가 연주자 한 명이에요. 현악기 인원은 이 시대 오케스트라의 보통 편성 기준이고, 관악기·타악기는 악보 편성 그대로예요." : "점 하나가 연주자 한 명이에요. 악보 편성 그대로 그렸어요.");
+  pickInst(solo ? "solo" : (S.orch.list[0] && S.orch.list[0].key));
+}
+function pickInst(k) {
+  const d = S.piece; if (!d || !k) { $("#instPanel").innerHTML = ""; return; }
+  S.inst = k;
+  document.querySelectorAll("#stageSvg .seat").forEach(g => g.classList.toggle("sel", g.dataset.inst === k));
+  document.querySelectorAll("#instChips .ichip").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.inst === k)));
+  const key = k === "solo" ? S.orch.solo : k, I = INST[key], o = S.orch.list.find(x => x.key === k);
+  // 선택한 악기 이름표
+  const s = S.orch.seats[k];
+
+  const sec = d.orchestraSections.find(x => x.stageId === FAM[I.fam].sec);
+  const role = k === "solo" ? d.instrumentDialogue : (sec && sec.used ? sec.role : "");
+  const timbre = k === "solo" ? d.soloTimbre : (sec && sec.used ? sec.timbre : "");
+  const count = k === "solo" ? "독주" : o ? (I.fam === "str" && S.orch.typical ? `약 ${o.count}명` : `${o.count}${I.fam === "voice" ? "명" : I.fam === "str" ? "명" : "대"}`) : "";
+  // 이 악기가 돋보이는 순간
+  const pts = d.listeningPoints || [], v = S.video;
+  const moments = pts.map((p, i) => ({ p, i })).filter(({ i }) => (S.orch.feats[i] || []).includes(k));
+  const momentHtml = moments.length ? moments.map(({ p, i }) => {
+    const sec2 = ptSec(p, i), inner = `<span class="ts">${fmt(sec2)}</span><span>${esc(p.title)}</span>`;
+    return v && (ytMode !== "embed" || embedBlocked(v.videoId))
+      ? `<a class="mo" data-gi="${i}" href="${esc(ytLink(v.videoId, sec2))}" target="_blank" rel="noopener noreferrer">${inner}</a>`
+      : `<button class="mo" type="button" data-seek="${i}">${inner}</button>`;
+  }).join("") : `<p class="small" style="margin:0">청취 가이드에는 이 악기가 따로 돋보이는 구간이 없어요. 합주 속에서 찾아 들어 보세요.</p>`;
+  // 소리 높이 막대 (피아노 건반 21~108 기준)
+  const range = I.lo != null ? `<div class="range" aria-label="소리 높이 범위"><span style="left:${((I.lo - 21) / 87 * 100).toFixed(1)}%;width:${((I.hi - I.lo) / 87 * 100).toFixed(1)}%"></span><em style="left:${((60 - 21) / 87 * 100).toFixed(1)}%"></em></div><div class="rlab"><span>낮은 소리</span><span>가운데 '도'</span><span>높은 소리</span></div>` : `<p class="small" style="margin:4px 0 0">정해진 음 높이 없이 리듬과 색을 더하는 악기예요.</p>`;
+  $("#instPanel").innerHTML = `
+    <div class="ih"><div><small class="fam f-${I.fam}"><i></i>${esc(FAM[I.fam].n)}${k === "solo" ? " · 무대의 주인공" : ""}</small><h4>${esc(I.n)}</h4></div>${count ? `<span class="pill">${esc(count)}</span>` : ""}</div>
+    ${role ? `<p class="irole">${esc(role)}</p>` : ""}${timbre ? `<p class="small" style="margin:4px 0 0">이 곡에서의 소리: ${esc(timbre)}</p>` : ""}
+    <h5>이 악기가 돋보이는 순간</h5><div class="moments">${momentHtml}</div>
+    <h5>악기 도감</h5>
+    <dl class="dex"><dt>생김새</dt><dd>${esc(I.look)}</dd><dt>소리</dt><dd>${esc(I.tone)}</dd><dt>알고 있나요?</dt><dd>${esc(I.fact)}</dd></dl>
+    <h5>소리 높이</h5>${range}`;
+}
+// 재생 중(또는 가이드를 눌렀을 때) 그 구간에서 활약하는 악기에 불 켜기
+function lightStage(i) {
+  const f = (S.orch && S.orch.feats && S.orch.feats[i]) || [];
+  document.querySelectorAll("#stageSvg .seat").forEach(g => g.classList.toggle("lit", f.includes(g.dataset.inst)));
+  const box = $("#nowPlaying");
+  if (box) { box.classList.toggle("hide", !f.length); box.textContent = f.length ? "지금 무대에서 돋보이는 악기: " + featNames(f) : ""; }
 }
 
 function renderQuiz() {
@@ -1197,17 +1437,19 @@ function goHome() {
 
 // ============ 이벤트 ============
 document.addEventListener("click", async e => {
-  const t = e.target.closest("[data-lib],[data-cat],[data-act],[data-q],[data-level],[data-zone],[data-seek],[data-quiz],[data-ask],[data-star],[data-mood],[data-filter],[data-open]");
+  if (e.target.closest("#pinX")) { pinState.off = true; updatePin(); return; } // [추가] 영상 고정 풀기
+  const t = e.target.closest("[data-lib],[data-cat],[data-act],[data-q],[data-level],[data-inst],[data-gi],[data-seek],[data-quiz],[data-ask],[data-star],[data-mood],[data-filter],[data-open]");
   if (!t) return;
   const ds = t.dataset;
   if (ds.lib) { const p = LIB.find(x => x.id === ds.lib); if (p) { $("#q").value = p.short; openLib(p, p.short, null); } } // [추가]
   else if (ds.cat) { shelfCat = ds.cat; renderShelf(); } // [추가]
   else if (ds.q) { $("#q").value = ds.q; $("#hintRow").classList.add("hide"); analyze(ds.q, ""); }
   else if (ds.level) { S.level = ds.level; store.set(LEVEL_KEY, S.level); document.querySelectorAll("[data-level]").forEach(b => b.setAttribute("aria-pressed", String(b === t))); }
-  else if (ds.zone) pickZone(ds.zone);
+  else if (ds.inst) pickInst(ds.inst); // [수정] 악기 하나하나 선택
+  else if (ds.gi !== undefined) { markNow(Number(ds.gi)); } // [추가] 유튜브로 여는 시간 링크도 무대 불 켜기
   else if (ds.seek !== undefined) {
     const i = Number(ds.seek), p = S.piece.listeningPoints[i], sec = ptSec(p, i);
-    if (ytPlayer && ytPlayer.seekTo) { ytPlayer.seekTo(sec, true); ytPlayer.playVideo(); toast(fmt(sec) + " 구간으로 이동했어요."); $("#videoCard").scrollIntoView({ behavior: "smooth", block: "center" }); }
+    if (ytPlayer && ytPlayer.seekTo) { ytPlayer.seekTo(sec, true); ytPlayer.playVideo(); toast(fmt(sec) + " 구간으로 이동했어요."); if (!$("#videoCard").classList.contains("pin")) $("#videoCard").scrollIntoView({ behavior: "smooth", block: "center" }); } // [수정] 고정돼 있으면 그대로 보이니 위로 올리지 않음
     else if (!S.video) toast("유튜브 링크로 찾으면 이 구간으로 바로 이동할 수 있어요.");
     else toast("플레이어를 준비하는 중이에요. 잠시 후 다시 눌러 주세요.");
     markNow(i);
@@ -1242,8 +1484,8 @@ document.addEventListener("click", async e => {
   else if (ds.act === "clear") { if (await confirmBox("감상 노트와 일기를 모두 지울까요? 되돌릴 수 없어요.")) { store.del(HISTORY_KEY); renderHist(); toast("감상 노트를 비웠어요."); } }
 });
 document.addEventListener("keydown", e => {
-  const z = e.target.closest && e.target.closest("#stageSvg .zone");
-  if (z && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); pickZone(z.dataset.zone); }
+  const z = e.target.closest && e.target.closest("#stageSvg .seat");
+  if (z && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); pickInst(z.dataset.inst); }
   if (e.key === "Escape") { drawer(false); $("#settings").classList.add("hide"); }
 });
 $("#askForm").addEventListener("submit", e => { e.preventDefault(); const v = $("#q").value.trim(); if (v) analyze(v, $("#hint").value.trim()); });
@@ -1265,7 +1507,6 @@ $("#chatForm").addEventListener("submit", e => { e.preventDefault(); const v = $
   for (let k = 0; k < 14; k++) { art += `<path d="M${k * 90 - 40} 300q45 -40 90 0" fill="none" stroke="#fff" stroke-opacity=".07" stroke-width="18"/>`; }
   $("#heroArt").innerHTML = art;
   document.querySelectorAll("[data-level]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.level === S.level)));
-  buildStage();
   renderShelf(); // [추가]
   $("#shelfQ").addEventListener("input", renderShelf);
   renderHist();
