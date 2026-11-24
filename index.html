@@ -1535,11 +1535,27 @@ function stopVoice() {
   if (audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; a.removeAttribute("src"); }
   ttsSpeaking = false; voiceBtn();
 }
+// [추가] 도슨트 대본: 첫인사 → 작곡가 → 곡이 태어난 이야기 → 악기들의 대화 → 감상 안내로 마무리
+function docentScript(p) {
+  const clean = t => String(t || "").replace(/\s*\([^)]*\)/g, "").replace(/[*#_`]/g, "").replace(/\s+/g, " ").trim();
+  const sents = t => clean(t).split(/(?<=[.!?。])\s+/).filter(Boolean);
+  const base = sents(p.audioSummaryScript || p.introHook);
+  const last = base.length > 1 && /보세요|들어|따라가|느껴/.test(base[base.length - 1]) ? base.pop() : "";
+  const parts = [base.join(" ")];
+  const bio = sents(p.composerBio).slice(0, 2).join(" ");
+  if (bio) parts.push(bio);
+  const story = sents(p.compositionStory).slice(0, 7).join(" ");
+  if (story) parts.push(story);
+  const dia = sents(p.instrumentDialogue).slice(0, 3).join(" ");
+  if (dia) parts.push("이제 음악 속으로 들어가 볼까요? " + dia);
+  parts.push(last || "편안하게 귀를 열고, 이 곡이 들려주는 이야기를 천천히 따라가 보세요.");
+  return parts.filter(Boolean).join(" ");
+}
 async function playVoice() {
   if (!S.piece) return;
   const b = $("#voiceBtn");
   if (b.dataset.on === "true") { stopVoice(); return; }
-  const text = (S.piece.audioSummaryScript || S.piece.introHook || "").slice(0, 1900);
+  const text = docentScript(S.piece).slice(0, 1900); // [수정] 곡 이야기·악기 대화를 더한 긴 대본
   if (!text) return;
   if (ttsApi) {
     try { ttsSpeaking = true; voiceBtn(); await ttsApi.speak(text, { voice: "airy", language: "ko", rate: 0.95 }); return; }
@@ -1596,19 +1612,23 @@ function cleanPcm(bytes, rate) {
   const zMed = med(loudZ), jMed = med(loudJ);
   // 말소리는 0.2초 안에서도 크기가 계속 변함 → 크기가 일정한 '윙' 소리는 잡음으로 봄
   const steady = w => { const a = Math.max(0, w - 4), z = Math.min(W - 1, w + 5); let m = 0, k = 0; for (let i = a; i <= z; i++) { m += rms[i]; k++; } m /= k; let v = 0; for (let i = a; i <= z; i++) v += (rms[i] - m) ** 2; return m > 0 && Math.sqrt(v / k) / m < 0.06; };
-  const speech = w => rms[w] > 0.2 * r90 && zcr[w] <= zMed * 1.8 + 0.04 && jump[w] <= jMed * 2.2 + 0.05 && !steady(w);
-  // 끝에서부터: 말소리 창이 연속 3개 이상 나오는 곳을 '진짜 끝'으로 봄 (최대 4초까지만 자름)
-  let endW = W, run = 0;
-  const minW = Math.max(0, W - Math.round(4 / 0.02));
+  // [수정] 끝이 잘리던 문제: 예전엔 '말소리'로 확인 안 되는 구간을 최대 4초까지 잘랐는데, 조용히 끝나는 마지막 음절까지 잘렸음.
+  // 이제는 확실한 잡음(거칠거나 '윙' 하고 일정한 소리)만 끝에서 지우고, 조용한 소리·말소리를 만나면 바로 멈춤 (최대 2.5초)
+  const quiet = w => rms[w] < 0.04 * r90;
+  const noisy = w => !quiet(w) && (zcr[w] > zMed * 2.5 + 0.06 || jump[w] > jMed * 3 + 0.08 || steady(w));
+  const minW = Math.max(0, W - Math.round(2.5 / 0.02));
+  let endW = W, lastNoise = -1;
   for (let w = W - 1; w >= minW; w--) {
-    if (speech(w)) { run++; if (run >= 3) { endW = w + run; break; } } else run = 0;
-    if (w === minW) endW = W - Math.round(0.3 / 0.02); // 4초 안에 못 찾으면 끝 0.3초만 자름
+    if (noisy(w)) { lastNoise = w; continue; }
+    if (quiet(w)) continue;
+    break; // 말소리(작은 소리 포함)를 만나면 그 뒤는 남김
   }
-  let end = Math.min(n, endW * win + Math.round(rate * 0.12));
-  const out = x.slice(0, end);
+  if (lastNoise >= 0) endW = lastNoise;
+  let end = Math.min(n, endW * win + Math.round(rate * (lastNoise >= 0 ? 0.12 : 0.25)));
+  const out = new Int16Array(end + Math.round(rate * 0.4)); out.set(x.subarray(0, end)); // [수정] 끝에 0.4초 쉼을 붙여 마지막 말이 잘려 들리지 않게
   const fin = Math.min(out.length, Math.round(rate * 0.01)), fout = Math.min(out.length, Math.round(rate * 0.12));
   for (let i = 0; i < fin; i++) out[i] = Math.round(out[i] * i / fin);
-  for (let i = 0; i < fout; i++) { const k = out.length - 1 - i; out[k] = Math.round(out[k] * (i / fout) ** 2); }
+  for (let i = 0; i < fout; i++) { const k = end - 1 - i; if (k >= 0) out[k] = Math.round(out[k] * (i / fout) ** 2); }
   return new Uint8Array(out.buffer);
 }
 function wav(pcmBytes, rate) {
