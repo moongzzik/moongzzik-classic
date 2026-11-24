@@ -1,6 +1,6 @@
 // 클래식에 관한 소고 — 서비스 워커
 // 고칠 때마다 VERSION 숫자를 1씩 올린다 (설치한 폰이 새 버전을 받도록)
-const VERSION = "moongzzik-classic-v6";
+const VERSION = "moongzzik-classic-v7";
 const SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
