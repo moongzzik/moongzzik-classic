@@ -1614,15 +1614,15 @@ function cleanPcm(bytes, rate) {
   const steady = w => { const a = Math.max(0, w - 4), z = Math.min(W - 1, w + 5); let m = 0, k = 0; for (let i = a; i <= z; i++) { m += rms[i]; k++; } m /= k; let v = 0; for (let i = a; i <= z; i++) v += (rms[i] - m) ** 2; return m > 0 && Math.sqrt(v / k) / m < 0.06; };
   // [수정] 끝이 잘리던 문제: 예전엔 '말소리'로 확인 안 되는 구간을 최대 4초까지 잘랐는데, 조용히 끝나는 마지막 음절까지 잘렸음.
   // 이제는 확실한 잡음(거칠거나 '윙' 하고 일정한 소리)만 끝에서 지우고, 조용한 소리·말소리를 만나면 바로 멈춤 (최대 2.5초)
-  const quiet = w => rms[w] < 0.04 * r90;
-  const noisy = w => !quiet(w) && (zcr[w] > zMed * 2.5 + 0.06 || jump[w] > jMed * 3 + 0.08 || steady(w));
+  const silent = w => rms[w] < 0.006 * r90 + 2; // 완전한 무음 (아주 작은 말소리는 무음이 아님)
+  const noisy = w => !silent(w) && (zcr[w] > zMed * 2.5 + 0.06 || jump[w] > jMed * 3 + 0.08 || steady(w));
   const minW = Math.max(0, W - Math.round(2.5 / 0.02));
-  let endW = W, lastNoise = -1;
-  for (let w = W - 1; w >= minW; w--) {
-    if (noisy(w)) { lastNoise = w; continue; }
-    if (quiet(w)) continue;
-    break; // 말소리(작은 소리 포함)를 만나면 그 뒤는 남김
-  }
+  let endW = W, lastNoise = -1, w = W - 1;
+  // [수정] 끝에서부터: 맨 끝의 무음 → 바로 붙은 잡음 구간까지만 봄. 작은 말소리('…세요'의 '요')를 만나면 멈춤
+  while (w >= minW && silent(w)) w--;
+  const noiseEnd = w;
+  while (w >= minW && noisy(w)) { lastNoise = w; w--; }
+  if (lastNoise >= 0 && noiseEnd - lastNoise + 1 < 8) lastNoise = -1; // 0.16초보다 짧으면 'ㅅ' 같은 말소리일 수 있어 남김
   if (lastNoise >= 0) endW = lastNoise;
   let end = Math.min(n, endW * win + Math.round(rate * (lastNoise >= 0 ? 0.12 : 0.25)));
   const out = new Int16Array(end + Math.round(rate * 0.4)); out.set(x.subarray(0, end)); // [수정] 끝에 0.4초 쉼을 붙여 마지막 말이 잘려 들리지 않게
