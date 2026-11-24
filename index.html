@@ -51,8 +51,19 @@ a{color:var(--wineT)}
 .hero{position:relative;background:var(--wine);color:#fff;overflow:hidden;padding:clamp(36px,6vw,72px) 0 clamp(150px,20vw,230px)}
 .hero>svg{position:absolute;left:50%;bottom:-2px;transform:translateX(-50%);width:max(900px,110%);height:auto;pointer-events:none}
 .hero .wrap{position:relative}
-.hero h1{font-size:clamp(30px,5.4vw,50px);line-height:1.12;color:#fff;max-width:15em}
+.hero h1{font-size:clamp(30px,5.4vw,50px);line-height:1.12;color:#fff;max-width:15em;word-break:keep-all}
 .hero .lead{margin-top:14px;max-width:34em;color:#f1dfe3;font-size:16px}
+/* [추가] 오늘의 추천 카드 */
+.today{margin-top:16px;max-width:620px;display:flex;gap:14px;align-items:flex-start;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);border-radius:20px;padding:16px 18px;backdrop-filter:blur(4px)}
+.today .pup{flex:none;width:52px;height:52px}
+.today .tx{min-width:0;flex:1}
+.today small{display:block;font-size:12.5px;color:#e9c98f;font-weight:700;letter-spacing:.02em}
+.today b{display:block;font-family:"Noto Serif KR",serif;font-size:clamp(19px,3.6vw,24px);line-height:1.3;margin:3px 0 2px;color:#fff}
+.today .who{font-size:13.5px;color:#f1dfe3}
+.today p{font-size:14.5px;color:#f7ecee;margin:8px 0 12px;line-height:1.6}
+.today .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}.today .tags span{font-size:12px;border-radius:999px;padding:3px 9px;background:rgba(255,255,255,.14);color:#fff}
+.today .btn{background:#fff;color:var(--wine);min-height:44px;padding:0 18px;font-size:15px}
+@media(max-width:420px){.today .pup{width:40px;height:40px}.today{padding:14px}}
 .ask{margin-top:26px;max-width:760px;background:var(--paper);color:var(--ink);border-radius:20px;padding:14px;box-shadow:0 24px 50px -24px rgba(0,0,0,.55)}
 .ask form{display:flex;gap:8px;flex-wrap:wrap}
 .ask form .field{flex:1 1 260px}
@@ -335,7 +346,9 @@ footer{border-top:1px solid var(--line);padding:22px 0;text-align:center;font-si
 <section id="home" class="hero">
   <svg id="heroArt" viewBox="0 0 1200 300" aria-hidden="true"></svg>
   <div class="wrap">
-    <h1>유튜브로 듣던 그 클래식, 어떤 이야기가 숨어 있을까요?</h1>
+    <h1>뭉뭉이의 오늘의 추천 클래식</h1>
+    <!-- [추가] 매일 다른 곡 추천 (서재 50곡을 날짜마다 돌아가며) -->
+    <div class="today" id="today"></div>
     <p class="lead">아래 도슨트 서재의 50곡은 누르면 바로 열려요. 다른 곡은 링크나 곡 제목을 넣으면 작곡가의 사연, 무대 위 악기들의 대화, 처음 듣는 사람을 위한 감상 포인트까지 프로그램북처럼 펼쳐 드려요.</p>
     <div class="ask">
       <form id="askForm">
@@ -924,7 +937,39 @@ function markNow(idx) {
 }
 
 // ============ 메인 흐름 ============
+// [추가] 뭉뭉이의 오늘의 추천: 한국 날짜 기준으로 매일 바뀌고, 50곡을 모두 돈 뒤에 다시 시작
+function todayPick() {
+  const kst = new Date(Date.now() + 9 * 3600e3), day = Math.floor(kst.getTime() / 864e5);
+  const ids = LIB.map(p => p.id); let seed = 20261124;
+  const rnd = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+  for (let i = ids.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [ids[i], ids[j]] = [ids[j], ids[i]]; }
+  return { piece: LIB.find(p => p.id === ids[((day % ids.length) + ids.length) % ids.length]), date: `${kst.getUTCMonth() + 1}월 ${kst.getUTCDate()}일`, day };
+}
+const PUP = `<svg class="pup" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="25" fill="#fff" opacity=".16"/><path d="M12 17c-3 6-2 14 3 16 3-4 4-10 3-15z" fill="#8a5a3e"/><path d="M40 17c3 6 2 14-3 16-3-4-4-10-3-15z" fill="#8a5a3e"/><ellipse cx="26" cy="28" rx="13" ry="12" fill="#f3e2cc"/><circle cx="21" cy="26" r="1.8" fill="#2b1d16"/><circle cx="31" cy="26" r="1.8" fill="#2b1d16"/><ellipse cx="26" cy="31.5" rx="2.6" ry="1.9" fill="#2b1d16"/><path d="M23 34.5q3 2.6 6 0" stroke="#2b1d16" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="17.5" cy="31" r="2" fill="#f0a6a6" opacity=".6"/><circle cx="34.5" cy="31" r="2" fill="#f0a6a6" opacity=".6"/><path d="M33 11l3-4 1 5" fill="#e9c98f"/><circle cx="37.5" cy="8.5" r="1.6" fill="#e9c98f"/></svg>`;
+function renderToday() {
+  const t = todayPick(), p = t.piece; if (!p) return;
+  const el = $("#today"); if (el.dataset.day === String(t.day)) return; el.dataset.day = t.day;
+  const min = p.typicalDurationSec ? Math.max(1, Math.round(p.typicalDurationSec / 60)) + "분" : "";
+  el.innerHTML = `${PUP}<div class="tx"><small>${t.date} · 오늘 뭉뭉이가 고른 곡</small><b>${esc(p.short)}</b><span class="who">${esc(p.composerName)}${min ? " · 약 " + min : ""}</span>
+    <p>${esc(p.introHook || "")}</p><div class="tags">${(p.moodTags || []).slice(0, 3).map(m => `<span>${esc(String(m).replace(/^#?/, "#"))}</span>`).join("")}</div>
+    <button type="button" class="btn" data-lib="${p.id}">오늘의 곡 듣기</button></div>`;
+}
+document.addEventListener("visibilitychange", () => { if (!document.hidden && $("#today")) renderToday(); }); // 자정이 지나면 새 곡으로
+
+// [추가] 휴대폰 '뒤로' 버튼: 앱이 꺼지지 않고 열린 창 닫기 → 첫 화면으로. 첫 화면에서는 한 번 더 누르면 닫힘
+function guardBack() { const H = window.history; if (!(H.state && H.state.mzApp)) H.pushState({ mzApp: 1 }, ""); } // 앱의 history()(감상 기록)와 이름이 겹쳐 window.history로
+let backWarned = 0;
+addEventListener("popstate", () => {
+  const set = $("#settings"), cf = $("#confirm"), dr = $("#drawer");
+  if (!cf.classList.contains("hide")) { $("#cfNo").click(); guardBack(); return; }
+  if (!set.classList.contains("hide")) { set.classList.add("hide"); guardBack(); return; }
+  if (dr.classList.contains("open")) { drawer(false); guardBack(); return; }
+  if ($("#home").classList.contains("hide")) { goHome(); guardBack(); return; }
+  if (Date.now() - backWarned > 2500) { backWarned = Date.now(); toast("한 번 더 누르면 앱이 닫혀요."); guardBack(); }
+  else window.history.back();
+});
 function show(view) {
+  if (view !== "home") guardBack(); // [추가] 다른 화면으로 가면 '뒤로'를 받을 자리 만들기
   ["home", "loading", "errorView", "result"].forEach(id => $("#" + id).classList.toggle("hide", id !== view));
   $("#shelf").classList.toggle("hide", view !== "home"); // [추가] 서재는 첫 화면에서만
 }
@@ -1015,6 +1060,7 @@ async function analyze(raw, hint) {
     return;
   }
   stopVoice();
+  const my = S.req = (S.req || 0) + 1; // [추가]
   const btn = $("#goBtn"); btn.disabled = true;
   show("loading"); window.scrollTo({ top: 0, behavior: "smooth" });
   const step = $("#loadStep");
@@ -1028,6 +1074,7 @@ async function analyze(raw, hint) {
     let r;
     try { r = await ask(systemPrompt(S.level, engine()), [{ role: "user", content: userPrompt() }], true); }
     finally { clearInterval(rot); }
+    if (my !== S.req) return; // [추가] 그사이 뒤로 가서 첫 화면이면 결과를 열지 않음
     const data = parseJSON(r.text);
     if (data.identified === false || !data.titleKo) {
       throw new Error(S.video ? "링크만으로는 어떤 곡인지 확신할 수 없었어요. 아래 칸에 곡 제목을 함께 적어 주세요." : "어떤 곡인지 찾지 못했어요. 작곡가와 곡 이름을 함께 적어 주세요.");
@@ -1039,6 +1086,7 @@ async function analyze(raw, hint) {
     openResult(old && old.diary);
   } catch (err) {
     console.error(err);
+    if (my !== S.req) return; // [추가]
     $("#errMsg").textContent = (err.message || "알 수 없는 오류가 났어요.") + (err.detail ? "\n(자세히: " + err.detail + ")" : ""); // [수정] 실제 오류 문구 표시
     show("errorView");
     if (ytId(raw)) { $("#hintRow").classList.remove("hide"); }
@@ -1599,7 +1647,7 @@ async function playVoice() {
   toast("이 기기에서는 음성을 들려 드릴 수 없어요.", true);
 }
 // [수정] Gemini 음성 끝 '치직' 잡음 제거 (말소리의 크기·거칠기를 먼저 재고, 끝에서부터 그와 다른 구간을 잘라 냄)
-const PCM_TAIL = 1.0, APP_VER = "v16"; // [추가] 끝 쉼 길이 · 설정에 보이는 앱 버전
+const PCM_TAIL = 1.0, APP_VER = "v17"; // [추가] 끝 쉼 길이 · 설정에 보이는 앱 버전
 function cleanPcm(bytes, rate) {
   const n = Math.floor(bytes.length / 2), dv = new DataView(bytes.buffer, bytes.byteOffset, n * 2);
   const x = new Int16Array(n);
@@ -1738,11 +1786,11 @@ function drawer(open) {
   const d = $("#drawer"), want = open === undefined ? !d.classList.contains("open") : open;
   d.classList.toggle("open", want); d.setAttribute("aria-hidden", String(!want));
   $("#veil").classList.toggle("hide", !want);
-  if (want) renderHist();
+  if (want) { renderHist(); guardBack(); } // [추가]
 }
 function confirmBox(msg) {
   return new Promise(res => {
-    $("#cfMsg").textContent = msg; $("#confirm").classList.remove("hide"); $("#cfNo").focus();
+    $("#cfMsg").textContent = msg; $("#confirm").classList.remove("hide"); $("#cfNo").focus(); guardBack();
     const done = v => { $("#confirm").classList.add("hide"); $("#cfYes").onclick = $("#cfNo").onclick = null; res(v); };
     $("#cfYes").onclick = () => done(true); $("#cfNo").onclick = () => done(false);
   });
@@ -1751,10 +1799,11 @@ function openSettings(msg) {
   engineLabel();
   $("#setMsg").textContent = msg || ""; $("#setMsg").classList.toggle("hide", !msg);
   $("#keyIn").value = geminiKey();
-  $("#settings").classList.remove("hide");
+  $("#settings").classList.remove("hide"); guardBack(); // [추가]
 }
 function goHome() {
-  stopVoice(); killPlayer(); S.video = null;
+  S.req = (S.req || 0) + 1; // [추가] 해설을 만드는 중에 돌아오면 그 결과는 버림
+  stopVoice(); killPlayer(); S.video = null; renderToday();
   show("home"); $("#q").value = ""; $("#hint").value = ""; $("#hintRow").classList.add("hide");
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -1847,6 +1896,9 @@ $("#chatForm").addEventListener("submit", e => { e.preventDefault(); const v = $
   renderShelf(); // [추가]
   $("#shelfQ").addEventListener("input", renderShelf);
   $("#appVer").textContent = "앱 버전 " + APP_VER; // [추가] 새 버전이 들어왔는지 확인용
+  renderToday(); guardBack(); // [추가] 오늘의 추천 · '뒤로' 받을 자리
+  // [추가] 목차(#이야기 등)를 눌러도 방문 기록이 쌓이지 않게: 주소를 바꾸지 않고 그 자리로만 이동
+  document.addEventListener("click", e => { const a = e.target.closest('a[href^="#"]'); if (!a || a.getAttribute("href").length < 2) return; const t = document.getElementById(a.getAttribute("href").slice(1)); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: "smooth", block: "start" }); } });
   [["fEra", "era"], ["fLen", "len"], ["fMood", "mood"], ["fComp", "comp"]].forEach(([id, k]) => $("#" + id).addEventListener("change", e => { shelfF[k] = e.target.value; renderShelf(); })); // [추가]
   renderCourse(); // [추가]
   renderHist();
