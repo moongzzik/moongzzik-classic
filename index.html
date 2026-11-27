@@ -1050,15 +1050,25 @@ function renderCourse() {
   if (next > 0) { const el = $("#course .day.next"); if (el) el.parentNode.scrollLeft = Math.max(0, el.offsetLeft - el.parentNode.offsetLeft - 8); }
 }
 // [추가] 곡과 어울리는 명화: 위키백과에 그림 주소를 물어 가져오고(이 기기에 기억), 못 가져오면 위키백과 링크만 보여 줌
-const ART_KEY = "moongzzik_classic_art";
+// [수정] 위키백과 '대표 사진'은 그림이 걸린 장소 사진(예: 백악관 집무실)일 때가 있어서,
+// 위키데이터의 '이미지(P18)' 항목 = 작품 파일 자체를 가져옴. 예전 기억(잘못된 사진 포함)은 지움
+const ART_KEY = "moongzzik_classic_art2";
+try { localStorage.removeItem("moongzzik_classic_art"); } catch {}
 async function artUrl(wiki) {
   const cache = store.get(ART_KEY, {});
   if (cache[wiki]) return cache[wiki];
-  const u = "https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages&pithumbsize=1000&titles=" + encodeURIComponent(wiki);
-  const r = await fetch(u); if (!r.ok) throw new Error("wiki " + r.status);
-  const j = await r.json(), pages = (j.query && j.query.pages) || {};
-  const pg = Object.values(pages)[0], src = pg && pg.thumbnail && pg.thumbnail.source;
-  if (!src) throw new Error("no image");
+  const r1 = await fetch("https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageprops&ppprop=wikibase_item&titles=" + encodeURIComponent(wiki));
+  if (!r1.ok) throw new Error("wiki " + r1.status);
+  const pg = Object.values(((await r1.json()).query || {}).pages || {})[0];
+  const qid = pg && pg.pageprops && pg.pageprops.wikibase_item;
+  if (!qid) throw new Error("no item");
+  const r2 = await fetch("https://www.wikidata.org/w/api.php?action=wbgetclaims&format=json&origin=*&property=P18&entity=" + qid);
+  if (!r2.ok) throw new Error("wikidata " + r2.status);
+  const cl = ((await r2.json()).claims || {}).P18 || [];
+  const best = cl.find(c => c.rank === "preferred") || cl[0];
+  const file = best && best.mainsnak && best.mainsnak.datavalue && best.mainsnak.datavalue.value;
+  if (!file) throw new Error("no image");
+  const src = "https://commons.wikimedia.org/wiki/Special:FilePath/" + encodeURIComponent(file.replace(/ /g, "_")) + "?width=1000";
   cache[wiki] = src; store.set(ART_KEY, cache);
   return src;
 }
@@ -1708,7 +1718,7 @@ async function playVoice() {
   toast("이 기기에서는 음성을 들려 드릴 수 없어요.", true);
 }
 // [수정] Gemini 음성 끝 '치직' 잡음 제거 (말소리의 크기·거칠기를 먼저 재고, 끝에서부터 그와 다른 구간을 잘라 냄)
-const PCM_TAIL = 1.0, APP_VER = "v20"; // [추가] 끝 쉼 길이 · 설정에 보이는 앱 버전
+const PCM_TAIL = 1.0, APP_VER = "v21"; // [추가] 끝 쉼 길이 · 설정에 보이는 앱 버전
 function cleanPcm(bytes, rate) {
   const n = Math.floor(bytes.length / 2), dv = new DataView(bytes.buffer, bytes.byteOffset, n * 2);
   const x = new Int16Array(n);
