@@ -53,6 +53,65 @@ a{color:var(--wineT)}
 .hero .wrap{position:relative}
 .hero h1{font-size:clamp(30px,5.4vw,50px);line-height:1.12;color:#fff;max-width:15em;word-break:keep-all}
 .hero .lead{margin-top:14px;max-width:34em;color:#f1dfe3;font-size:16px}
+/* [추가] 크리스마스 어드벤트 달력 */
+.today.advent{display:block;position:relative;overflow:hidden;max-width:640px;padding:18px 16px 14px;border-radius:24px;
+  background:radial-gradient(120% 80% at 50% 0%,#1f5a3c 0%,#123726 55%,#0c2519 100%);border:1.5px solid #c99a4a;
+  box-shadow:0 0 0 5px rgba(201,154,74,.18),0 18px 40px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08)}
+.today.advent::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.025) 0 10px,transparent 10px 20px);pointer-events:none}
+.advhead{display:flex;gap:12px;align-items:center;position:relative;z-index:1;margin-bottom:14px}
+.advhead .pup{width:48px;height:48px;flex:none}
+.advhead small{display:block;font-size:12.5px;font-weight:700;color:#f0cf86;letter-spacing:.02em}
+.advhead b{display:block;font-family:"Noto Serif KR",serif;font-size:clamp(19px,4.6vw,25px);color:#fff;line-height:1.25;margin:2px 0}
+.advhead span{display:block;font-size:13px;color:#d9e8dd}
+.snowfall{position:absolute;inset:0;pointer-events:none;z-index:0}
+.snowfall i{position:absolute;top:-10px;width:5px;height:5px;border-radius:50%;background:#fff;opacity:.55;animation:snowf 8s linear infinite}
+.snowfall i:nth-child(3n){width:3px;height:3px;opacity:.4}.snowfall i:nth-child(4n){width:7px;height:7px;opacity:.3;filter:blur(1px)}
+@keyframes snowf{0%{transform:translate(0,-10px)}50%{transform:translate(10px,260px)}100%{transform:translate(-6px,560px)}}
+.doors{position:relative;z-index:1;display:grid;grid-template-columns:repeat(6,1fr);gap:7px}
+.door{position:relative;aspect-ratio:3/4;border-radius:10px;border:1px solid rgba(201,154,74,.75);padding:5px 4px 4px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+  color:#f6e2b3;cursor:pointer;overflow:hidden;box-shadow:inset 0 0 0 2px rgba(255,255,255,.06),0 3px 8px rgba(0,0,0,.25);transition:transform .2s,box-shadow .2s;font:inherit}
+.door.g{background:linear-gradient(160deg,#246b46,#164a30)}.door.r{background:linear-gradient(160deg,#b3243a,#82172a)}.door.c{background:linear-gradient(160deg,#fbf3e2,#ecdcbc);color:#8c1d30}
+.door::after{content:"";position:absolute;inset:3px;border:1px dashed rgba(201,154,74,.45);border-radius:7px;pointer-events:none}
+.door .dm{font-size:9.5px;font-weight:700;opacity:.85;height:12px;line-height:12px}
+.door .dn{font-family:"Noto Serif KR",serif;font-size:clamp(17px,4.8vw,24px);line-height:1;font-weight:700}
+.door .ai{width:15px;height:15px;opacity:.9}
+.door .dt{position:absolute;top:0;left:0;right:0;font-size:9.5px;font-weight:800;background:#f0cf86;color:#5c1429;line-height:14px}
+.door .dp{position:absolute;bottom:0;left:0;right:0;font-size:9px;font-weight:700;background:rgba(0,0,0,.35);color:#fff;line-height:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 2px}
+.door.c .dp{background:rgba(140,29,48,.85)}
+.door.eve{grid-column:5/7;grid-row:4/6;aspect-ratio:auto;background:radial-gradient(circle at 50% 35%,#e5b75c 0%,#b8862f 45%,#7d5414 100%);color:#fff7e0;border-color:#f6dc9c}
+.door.eve .dn{font-size:clamp(34px,10vw,52px);text-shadow:0 2px 6px rgba(0,0,0,.3)}.door.eve .ai{width:26px;height:26px}.door.eve .dm::after{content:"크리스마스이브"}
+.door.lock{filter:saturate(.75) brightness(.86)}.door.lock .ai{opacity:.55}
+.door.lock::before{content:"";position:absolute;right:4px;top:4px;width:6px;height:6px;border-radius:50%;background:#f0cf86;box-shadow:0 0 0 2px rgba(0,0,0,.15)}
+.door.now{animation:doorGlow 2.2s ease-in-out infinite;border-color:#f6dc9c}
+@keyframes doorGlow{0%,100%{box-shadow:0 0 0 0 rgba(240,207,134,.0),0 3px 8px rgba(0,0,0,.25)}50%{box-shadow:0 0 0 4px rgba(240,207,134,.55),0 0 18px rgba(240,207,134,.6)}}
+.door.open{filter:none;opacity:.92}.door.open .dn{opacity:.75}
+.door:not(.lock):hover,.door:not(.lock):focus-visible{transform:translateY(-2px) rotate(-1deg)}
+.advfoot{position:relative;z-index:1;margin:12px 0 0;font-size:12.5px;color:#f0cf86;display:flex;align-items:center;gap:6px;justify-content:center}
+.ai.sm{width:13px;height:13px}
+@media(max-width:380px){.doors{gap:5px}.door .ai{width:12px;height:12px}}
+@media(prefers-reduced-motion:reduce){.snowfall{display:none}.door.now{animation:none;box-shadow:0 0 0 3px rgba(240,207,134,.6)}}
+/* 선물 열기 */
+.advgift{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:20px;background:rgba(8,20,13,.0);transition:background .3s}
+.advgift.on{background:rgba(8,20,13,.72)}
+.giftcard{position:relative;width:min(420px,100%);max-height:92vh;overflow:auto;background:linear-gradient(180deg,#fffaf0,#f6ead3);color:#2b1d16;border-radius:22px;padding:30px 20px 18px;
+  border:2px solid #c99a4a;box-shadow:0 0 0 6px rgba(201,154,74,.25),0 30px 60px rgba(0,0,0,.45);transform:scale(.6) rotate(-4deg);opacity:0;transition:transform .45s cubic-bezier(.2,1.3,.4,1),opacity .3s}
+.advgift.on .giftcard{transform:none;opacity:1}
+.ribbon{position:absolute;left:50%;top:-1px;transform:translateX(-50%);width:44px;height:26px;background:#b3243a;border-radius:0 0 8px 8px;box-shadow:0 2px 0 #82172a}
+.ribbon::before,.ribbon::after{content:"";position:absolute;top:4px;width:26px;height:16px;border:4px solid #b3243a;border-radius:50%}
+.ribbon::before{right:34px}.ribbon::after{left:34px}
+.gx{position:absolute;right:10px;top:10px;width:36px;height:36px;border-radius:50%;border:0;background:rgba(0,0,0,.06);font-size:20px;color:#5c1429}
+.giftcard small{display:block;text-align:center;font-size:12.5px;font-weight:800;color:#1e6b45;letter-spacing:.04em}
+.gart{position:relative;margin:12px 0;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#1f5a3c,#0c2519);min-height:150px;display:grid;place-items:center;border:1px solid rgba(201,154,74,.6)}
+.gart img{display:block;width:100%;max-height:42vh;object-fit:contain;opacity:0;transition:opacity .5s;position:relative;z-index:1}.gart img.on{opacity:1}
+.gart span{position:absolute;color:#f0cf86}.ai.big{width:46px;height:46px}
+.giftcard b{display:block;text-align:center;font-family:"Noto Serif KR",serif;font-size:22px;line-height:1.3;color:#5c1429}
+.gwho{display:block;text-align:center;font-size:13.5px;color:#6d6360;margin-top:2px}
+.gnote{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px dashed #c99a4a;border-radius:14px;padding:12px;margin:14px 0;font-size:14.5px;line-height:1.65}
+.gnote .pup{width:38px;height:38px;flex:none;background:#5c1429;border-radius:50%}
+.gbtn{display:flex;gap:8px}.gbtn .btn{flex:1;min-height:46px;justify-content:center}
+.gbtn .btn:first-child{background:#b3243a;color:#fff}.ghostg{background:#fff;color:#1e6b45;border:1px solid #1e6b45}
+.gcap{display:block;text-align:center;font-style:normal;font-size:11.5px;color:#8b7f78;margin-top:10px}
+@media(prefers-reduced-motion:reduce){.giftcard{transition:none}}
 /* [추가] 오늘의 추천 카드 */
 .today{margin-top:16px;max-width:620px;display:flex;gap:14px;align-items:flex-start;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);border-radius:20px;padding:16px 18px;backdrop-filter:blur(4px)}
 .today .pup{flex:none;width:52px;height:52px}
@@ -358,7 +417,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;text-align:center;font-si
 <section id="home" class="hero">
   <svg id="heroArt" viewBox="0 0 1200 300" aria-hidden="true"></svg>
   <div class="wrap">
-    <h1>뭉뭉이의 오늘의 추천 클래식</h1>
+    <h1 id="heroTitle">뭉뭉이의 오늘의 추천 클래식</h1>
     <!-- [추가] 매일 다른 곡 추천 (서재 곡을 날짜마다 돌아가며) -->
     <div class="today" id="today"></div>
     <p class="lead">아래 도슨트 서재의 57곡은 누르면 바로 열려요. 다른 곡은 링크나 곡 제목을 넣으면 작곡가의 사연, 무대 위 악기들의 대화, 처음 듣는 사람을 위한 감상 포인트까지 프로그램북처럼 펼쳐 드려요.</p>
@@ -977,8 +1036,11 @@ function todayPick() {
 }
 const PUP = `<svg class="pup" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="25" fill="#fff" opacity=".16"/><path d="M12 17c-3 6-2 14 3 16 3-4 4-10 3-15z" fill="#8a5a3e"/><path d="M40 17c3 6 2 14-3 16-3-4-4-10-3-15z" fill="#8a5a3e"/><ellipse cx="26" cy="28" rx="13" ry="12" fill="#f3e2cc"/><circle cx="21" cy="26" r="1.8" fill="#2b1d16"/><circle cx="31" cy="26" r="1.8" fill="#2b1d16"/><ellipse cx="26" cy="31.5" rx="2.6" ry="1.9" fill="#2b1d16"/><path d="M23 34.5q3 2.6 6 0" stroke="#2b1d16" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="17.5" cy="31" r="2" fill="#f0a6a6" opacity=".6"/><circle cx="34.5" cy="31" r="2" fill="#f0a6a6" opacity=".6"/><path d="M33 11l3-4 1 5" fill="#e9c98f"/><circle cx="37.5" cy="8.5" r="1.6" fill="#e9c98f"/></svg>`;
 function renderToday() {
+  const ast = adventState(); // [추가] 11/28~12/31은 크리스마스 어드벤트 달력
+  $("#heroTitle").textContent = ast ? (ast.after ? "뭉뭉이의 크리스마스 클래식" : "뭉뭉이의 크리스마스 어드벤트") : "뭉뭉이의 오늘의 추천 클래식";
+  if (ast) { renderAdvent(ast); return; }
   const t = todayPick(), p = t.piece; if (!p) return;
-  const el = $("#today"); if (el.dataset.day === String(t.day)) return; el.dataset.day = t.day;
+  const el = $("#today"); el.className = "today"; el.dataset.advk = ""; if (el.dataset.day === String(t.day)) return; el.dataset.day = t.day;
   const min = p.typicalDurationSec ? Math.max(1, Math.round(p.typicalDurationSec / 60)) + "분" : "";
   el.innerHTML = `${PUP}<div class="tx"><small>${t.date} · 오늘 뭉뭉이가 고른 곡</small><b>${esc(p.short)}</b><span class="who">${esc(p.composerName)}${min ? " · 약 " + min : ""}</span>
     <p>${esc(p.introHook || "")}</p><div class="tags">${(p.moodTags || []).slice(0, 3).map(m => `<span>${esc(String(m).replace(/^#?/, "#"))}</span>`).join("")}</div>
@@ -986,12 +1048,112 @@ function renderToday() {
 }
 document.addEventListener("visibilitychange", () => { if (!document.hidden && $("#today")) renderToday(); }); // 자정이 지나면 새 곡으로
 
+// ============ [추가] 뭉뭉이의 크리스마스 어드벤트 (11/28 ~ 12/24, 한 칸에 한 곡) ============
+const ADV_KEY = "moongzzik_classic_advent"; // 열어 본 칸 기억
+const ADV_YEAR = 2026;
+const ADVENT = [ // [월, 일, 곡 id, 뭉뭉이의 한마디]
+  [11, 28, "traumerei", "첫 칸이에요! 크리스마스를 기다리는 마음은 아이처럼 꿈꾸는 마음이래요. 따뜻한 차 한 잔과 함께 들어요."],
+  [11, 29, "clairdelune", "11월의 마지막 주말, 창밖 달빛을 바라보며 들어 보세요. 마음이 조용히 가라앉아요."],
+  [11, 30, "air", "11월아, 고마웠어. 한 달을 잘 마무리하는 기도 같은 곡이에요."],
+  [12, 1, "campanella", "드디어 12월! 종소리로 크리스마스 달을 열어요. 딸랑딸랑, 반짝이는 피아노를 들어 봐요."],
+  [12, 2, "salut", "사랑하는 사람에게 건네는 짧은 인사예요. 오늘은 가족에게 따뜻한 말 한마디 어때요?"],
+  [12, 3, "gymnopedie", "바쁜 연말일수록 천천히. 느린 걸음으로 걷는 듯한 곡이에요."],
+  [12, 4, "tchai_vc", "첫눈 같은 러시아의 겨울 공기가 가득한 협주곡이에요. 바이올린이 반짝반짝 빛나요."],
+  [12, 5, "elise", "누구나 한 번쯤 쳐 본 그 곡! 오늘은 가족과 '이 곡 아는 사람?' 놀이 어때요?"],
+  [12, 6, "swan", "하얀 눈 위의 백조처럼 우아한 첼로 소리예요. 주말 아침에 잘 어울려요."],
+  [12, 7, "eineklein", "월요일 아침엔 경쾌하게! 모차르트의 산뜻한 세레나데로 한 주를 시작해요."],
+  [12, 8, "nocturne92", "따뜻한 조명 아래에서 듣는 밤의 노래예요. 오늘 하루도 수고했어요."],
+  [12, 9, "meditation", "잠시 눈을 감고 숨을 고르는 시간. 바이올린이 마음을 쓰다듬어 줘요."],
+  [12, 10, "k467", "크리스마스까지 2주! 영화에도 나온 아름다운 2악장을 꼭 들어 봐요."],
+  [12, 11, "rach2", "뭉뭉이가 제일 좋아하는 라흐마니노프예요. 추운 밤에 들으면 마음이 뜨거워져요."],
+  [12, 12, "danube", "주말엔 왈츠! 거실에서 가족과 빙글빙글 돌아 봐요. 새해 음악회의 단골 곡이에요."],
+  [12, 13, "goldberg", "조용한 일요일, 한 줄 한 줄 차분히 쌓아 가는 바흐를 들어요."],
+  [12, 14, "swanlake", "겨울엔 발레! 백조들이 호숫가에서 춤추는 장면을 떠올려 봐요."],
+  [12, 15, "moonlight", "겨울밤의 달빛이에요. 1악장은 고요하게, 3악장은 폭풍처럼!"],
+  [12, 16, "peergynt", "어두운 겨울 아침, 이 곡으로 해를 불러와요. '아침의 기분'을 들어 봐요."],
+  [12, 17, "cellosuite1", "첼로 한 대로 가득 채우는 시간. 연말 정리하는 손길에 잘 어울려요."],
+  [12, 18, "rach_sym2", "클라리넷의 긴 노래가 겨울밤을 따뜻하게 감싸요. 담요 덮고 들어요."],
+  [12, 19, "brindisi", "연말 모임의 계절! 잔을 들고 함께 부르는 축배의 노래예요."],
+  [12, 20, "tchai1", "웅장한 첫 화음이 울리면 크리스마스가 정말 코앞이에요. 볼륨을 키워요!"],
+  [12, 21, "canon", "밤이 가장 긴 동지 무렵이에요. 같은 선율이 되풀이되는 따뜻한 위로를 들어요."],
+  [12, 22, "nessundorma", "'아무도 잠들지 마라!' 크리스마스를 이틀 앞둔 설레는 밤에 어울려요."],
+  [12, 23, "beet9", "온 세상이 형제가 되는 '환희의 송가'. 연말이면 특히 많이 연주되는 교향곡이에요."],
+  [12, 24, "nutcracker", "메리 크리스마스 이브! 크리스마스이브에 펼쳐지는 동화, '호두까기 인형'이 마지막 선물이에요."]
+];
+function kstNow() { const k = new Date(Date.now() + 9 * 3600e3); return { y: k.getUTCFullYear(), m: k.getUTCMonth() + 1, d: k.getUTCDate() }; }
+const advNum = (m, d) => m * 100 + d; // 1128 ~ 1224 비교용
+function adventState() {
+  const t = kstNow(); if (t.y !== ADV_YEAR) return null;
+  const n = advNum(t.m, t.d);
+  if (n < 1128 || n > 1231) return null; // 기간 밖이면 평소의 '오늘의 추천'
+  return { today: n, after: n > 1224 };
+}
+// 작은 장식 그림 (직접 그린 단순한 모양)
+const ADV_ICON = {
+  snow: '<path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M9.5 3.5L12 6l2.5-2.5M9.5 20.5L12 18l2.5 2.5" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/>',
+  star: '<path d="M12 2.5l2.6 6.1 6.6.5-5 4.3 1.6 6.4L12 16.4l-5.8 3.4 1.6-6.4-5-4.3 6.6-.5z" fill="currentColor"/>',
+  bell: '<path d="M12 3a1.6 1.6 0 011.6 1.6v.4A6 6 0 0118 11v4l2 2.5H4L6 15v-4a6 6 0 014.4-6v-.4A1.6 1.6 0 0112 3z" fill="currentColor"/><circle cx="12" cy="20" r="2" fill="currentColor"/>',
+  tree: '<path d="M12 2l5 7h-2.5l4 6h-3l4 5H4.5l4-5h-3l4-6H7z" fill="currentColor"/><rect x="10.8" y="20" width="2.4" height="2.5" fill="currentColor"/>',
+  gift: '<rect x="3.5" y="9" width="17" height="12" rx="1.2" fill="currentColor"/><rect x="2.5" y="6.5" width="19" height="4" rx="1" fill="currentColor"/><path d="M12 6.5v14.5" stroke="rgba(0,0,0,.25)" stroke-width="2.2"/><path d="M12 6.5c-1.5-3.5-5-4-5-1.6 0 1.6 3 1.6 5 1.6zm0 0c1.5-3.5 5-4 5-1.6 0 1.6-3 1.6-5 1.6z" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+  note: '<path d="M9 18.5V5.5l11-2v12.5" stroke="currentColor" stroke-width="1.8" fill="none"/><circle cx="6.5" cy="18.5" r="2.6" fill="currentColor"/><circle cx="17.5" cy="16" r="2.6" fill="currentColor"/>'
+};
+const advSvg = (k, c) => `<svg class="${c || "ai"}" viewBox="0 0 24 24" aria-hidden="true">${ADV_ICON[k]}</svg>`;
+function renderAdvent(st) {
+  const el = $("#today"), opened = store.get(ADV_KEY, []);
+  const key = st.today + "|" + opened.length; if (el.dataset.advk === key) return; el.dataset.advk = key; el.dataset.day = "";
+  el.className = "today advent";
+  const icons = ["snow", "star", "bell", "tree", "gift", "note"], tones = ["g", "r", "c"];
+  const left = Math.max(0, Math.round((Date.UTC(ADV_YEAR, 11, 24) - Date.UTC(ADV_YEAR, kstNow().m - 1, kstNow().d)) / 864e5));
+  const doors = ADVENT.map(([m, d, id], i) => {
+    const n = advNum(m, d), can = st.after || n <= st.today, isToday = n === st.today, wasOpen = opened.includes(n), p = LIB.find(x => x.id === id);
+    const tone = i === ADVENT.length - 1 ? "eve" : tones[i % 3];
+    const label = `${m}월 ${d}일${can ? (wasOpen ? " · 열어 봄: " + (p ? p.short : "") : " · 열 수 있어요") : " · 아직 잠겨 있어요"}`;
+    return `<button type="button" class="door ${tone}${can ? "" : " lock"}${isToday ? " now" : ""}${wasOpen ? " open" : ""}" data-adv="${n}" aria-label="${esc(label)}">
+      <span class="dm">${d === 1 || i === 0 ? m + "월" : ""}</span><b class="dn">${d}</b>${advSvg(i === ADVENT.length - 1 ? "star" : icons[i % icons.length])}
+      ${isToday ? '<span class="dt">오늘</span>' : ""}${wasOpen ? `<span class="dp">${esc(p ? p.composerName.split(" ").pop() : "")}</span>` : ""}</button>`;
+  }).join("");
+  el.innerHTML = `<div class="advhead">${PUP}<div><small>${st.after ? "메리 크리스마스! 모든 칸이 열렸어요" : left ? `크리스마스까지 ${left}일` : "오늘은 크리스마스이브!"}</small>
+      <b>${st.after ? "그동안 받은 선물을 다시 열어 보세요" : "하루 한 칸, 클래식 선물을 열어 보세요"}</b><span>숫자를 누르면 그날의 곡이 나와요. 지난 칸도 다시 열 수 있어요</span></div></div>
+    <div class="snowfall" aria-hidden="true">${Array.from({ length: 18 }, (_, i) => `<i style="left:${(i * 37) % 100}%;animation-delay:${(i * 0.73) % 6}s;animation-duration:${6 + (i % 5)}s"></i>`).join("")}</div>
+    <div class="doors">${doors}</div>
+    <p class="advfoot">${advSvg("star", "ai sm")} 열린 칸 ${opened.filter(n => n <= 1224).length} / ${ADVENT.length}</p>`;
+}
+function openAdvent(n) {
+  const st = adventState(); if (!st) return;
+  const row = ADVENT.find(([m, d]) => advNum(m, d) === n); if (!row) return;
+  const [m, d, id, note] = row, p = LIB.find(x => x.id === id);
+  if (!(st.after || n <= st.today)) {
+    const days = Math.round((Date.UTC(ADV_YEAR, m - 1, d) - Date.UTC(ADV_YEAR, kstNow().m - 1, kstNow().d)) / 864e5);
+    toast(`${m}월 ${d}일에 열려요. ${days}일만 기다려 주세요!`); return;
+  }
+  if (!p) return;
+  const opened = store.get(ADV_KEY, []); if (!opened.includes(n)) store.set(ADV_KEY, [...opened, n]);
+  const min = p.typicalDurationSec ? "약 " + Math.max(1, Math.round(p.typicalDurationSec / 60)) + "분" : "";
+  const art = (p.paintings || [])[0];
+  const box = $("#advGift");
+  box.innerHTML = `<div class="giftcard" role="dialog" aria-modal="true" aria-label="${m}월 ${d}일의 선물">
+    <div class="ribbon" aria-hidden="true"></div>
+    <button type="button" class="gx" data-act="advclose" aria-label="닫기">×</button>
+    <small>${m}월 ${d}일 · 뭉뭉이의 클래식 선물</small>
+    <div class="gart"><img alt="" id="advImg"><span>${advSvg(n === 1224 ? "star" : "gift", "ai big")}</span></div>
+    <b>${esc(p.short)}</b><span class="gwho">${esc(p.composerName)}${min ? " · " + min : ""}</span>
+    <p class="gnote">${PUP}<span>${esc(note)}</span></p>
+    <div class="gbtn"><button type="button" class="btn" data-lib="${p.id}">이 곡 듣기</button><button type="button" class="btn ghostg" data-act="advclose">달력으로</button></div>
+    ${art ? `<em class="gcap">그림 · ${esc(art.ko)} (${esc(art.artist)})</em>` : ""}</div>`;
+  box.classList.remove("hide"); guardBack();
+  requestAnimationFrame(() => box.classList.add("on"));
+  if (art) artUrl(art.wiki).then(src => { const im = $("#advImg"); if (!im) return; im.onload = () => im.classList.add("on"); im.src = src; }).catch(() => {});
+  renderToday();
+}
+function closeAdvent() { const box = $("#advGift"); box.classList.remove("on"); box.classList.add("hide"); box.innerHTML = ""; }
+
 // [추가] 휴대폰 '뒤로' 버튼: 앱이 꺼지지 않고 열린 창 닫기 → 첫 화면으로. 첫 화면에서는 한 번 더 누르면 닫힘
 function guardBack() { const H = window.history; if (!(H.state && H.state.mzApp)) H.pushState({ mzApp: 1 }, ""); } // 앱의 history()(감상 기록)와 이름이 겹쳐 window.history로
 let backWarned = 0;
 addEventListener("popstate", () => {
   const set = $("#settings"), cf = $("#confirm"), dr = $("#drawer");
   if (!cf.classList.contains("hide")) { $("#cfNo").click(); guardBack(); return; }
+  if (!$("#advGift").classList.contains("hide")) { closeAdvent(); guardBack(); return; } // [추가] 어드벤트 선물 닫기
   if (!set.classList.contains("hide")) { set.classList.add("hide"); guardBack(); return; }
   if (dr.classList.contains("open")) { drawer(false); guardBack(); return; }
   if ($("#home").classList.contains("hide")) { goHome(); guardBack(); return; }
@@ -1738,7 +1900,7 @@ async function playVoice() {
   toast("이 기기에서는 음성을 들려 드릴 수 없어요.", true);
 }
 // [수정] Gemini 음성 끝 '치직' 잡음 제거 (말소리의 크기·거칠기를 먼저 재고, 끝에서부터 그와 다른 구간을 잘라 냄)
-const PCM_TAIL = 1.0, APP_VER = "v22"; // [추가] 끝 쉼 길이 · 설정에 보이는 앱 버전
+const PCM_TAIL = 1.0, APP_VER = "v23"; // [추가] 끝 쉼 길이 · 설정에 보이는 앱 버전
 function cleanPcm(bytes, rate) {
   const n = Math.floor(bytes.length / 2), dv = new DataView(bytes.buffer, bytes.byteOffset, n * 2);
   const x = new Int16Array(n);
@@ -1901,6 +2063,10 @@ function goHome() {
 
 // ============ 이벤트 ============
 document.addEventListener("click", async e => {
+  const adv = e.target.closest("[data-adv]"); // [추가] 어드벤트 칸 열기
+  if (adv) { openAdvent(+adv.dataset.adv); return; }
+  if (e.target.closest('[data-act="advclose"]') || e.target.id === "advGift") { closeAdvent(); return; }
+  if (e.target.closest("#advGift [data-lib]")) closeAdvent();
   if (e.target.closest("#pinX")) { pinState.off = true; updatePin(); return; } // [추가] 영상 고정 풀기
   const cz = e.target.closest("[data-course]"); // [추가] 7일 코스 미션 완료
   if (cz) { const n = +cz.dataset.course, d = courseDone(); if (!d.includes(n)) store.set(COURSE_KEY, [...d, n]); renderMission(); renderCourse(); toast(courseDone().length >= 7 ? "7일 입문 코스를 모두 마쳤어요. 축하해요!" : `Day ${n} 미션 완료! 다음 곡도 기다리고 있어요.`); return; }
@@ -2004,5 +2170,7 @@ $("#chatForm").addEventListener("submit", e => { e.preventDefault(); const v = $
 }
 }
 </script>
+<!-- [추가] 어드벤트 선물 열기 -->
+<div id="advGift" class="advgift hide"></div>
 </body>
 </html>
